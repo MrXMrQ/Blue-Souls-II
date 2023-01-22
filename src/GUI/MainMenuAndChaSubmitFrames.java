@@ -23,10 +23,10 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     JLabel subHeadline;
     JLabel creatorText;
 
-    ClassPictures knightPicture;
-    ClassPictures warriorPicture;
-    ClassPictures wizardPicture;
-    ClassPictures confessorPicture;
+    LabelWithIcons knightPicture;
+    LabelWithIcons warriorPicture;
+    LabelWithIcons wizardPicture;
+    LabelWithIcons confessorPicture;
 
     //buttons
     JButton submitButton;
@@ -166,7 +166,6 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             if (i > 0) {
                 GameLauncher.characterArray[0] = GameLauncher.characterArray[i];
                 GameLauncher.characterArray[0].setName(playerName);
-                System.out.println(GameLauncher.characterArray[0].getName() + GameLauncher.characterArray[0].getHealthpoints());
                 chaSelectWindow.dispose();
                 GameFrame.gameFrame();
 
@@ -187,17 +186,17 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelCENTER_CENTER = new JPanel(flowLayout);
         panelCENTER_CENTER.setPreferredSize(new Dimension(0, 400));
 
-        knightPicture = new ClassPictures();
+        knightPicture = new LabelWithIcons();
         knightPicture.setText("Knight");
 
-        warriorPicture = new ClassPictures();
+        warriorPicture = new LabelWithIcons();
         warriorPicture.setText("Warrior");
 
-        wizardPicture = new ClassPictures();
+        wizardPicture = new LabelWithIcons();
         wizardPicture.setText("wizard");
 
         confessor = new ImageIcon(Objects.requireNonNull(getClass().getResource("Confessor.png")));
-        confessorPicture = new ClassPictures();
+        confessorPicture = new LabelWithIcons();
         confessorPicture.setIcon(confessor);
 
         panelCENTER_CENTER.add(knightPicture);
