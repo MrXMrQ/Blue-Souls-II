@@ -1,26 +1,26 @@
 package Dungeons;
 
 public class Dungeons {
-    String difficulty;
+    String name;
     int lowLevel;
     int highLevel;
     boolean loot;
     String type;
 
     public Dungeons(String difficulty, int lowLevel, int highLevel, boolean loot, String type) {
-        this.difficulty = difficulty;
+        this.name = difficulty;
         this.lowLevel = lowLevel;
         this.highLevel = highLevel;
         this.loot = loot;
         this.type = type;
     }
 
-    public String getDifficulty() {
-        return difficulty;
+    public String getName() {
+        return name;
     }
 
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getLowLevel() {
