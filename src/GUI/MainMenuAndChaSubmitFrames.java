@@ -37,6 +37,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
 
     //icons
     Icon confessor;
+    Icon warrior;
 
     //other components or variables
     JTextField textFieldUsername;
@@ -119,7 +120,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         textAreaStatsPane = new JScrollPane(textAreaStats);
 
         holder = new JPanel();
-        holder.setPreferredSize(new Dimension(128, 128));
+        holder.setPreferredSize(new Dimension(256, 256));
         holder.setOpaque(true);
         holder.add(textAreaStatsPane);
 
@@ -129,7 +130,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelSOUTH.setPreferredSize(new Dimension(0, 100));
 
         knightButton = new JButton(GameLauncher.characterArray[1].getName());
-        knightButton.setPreferredSize(new Dimension(128, 32));
+        knightButton.setPreferredSize(new Dimension(256, 64));
         knightButton.addActionListener(e -> {
             i = 1;
             printer(i);
@@ -137,7 +138,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelSOUTH.add(knightButton);
 
         warriorButton = new JButton(GameLauncher.characterArray[2].getName());
-        warriorButton.setPreferredSize(new Dimension(128, 32));
+        warriorButton.setPreferredSize(new Dimension(256, 64));
         warriorButton.addActionListener(e -> {
             i = 2;
             printer(i);
@@ -145,7 +146,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelSOUTH.add(warriorButton);
 
         wizardButton = new JButton(GameLauncher.characterArray[3].getName());
-        wizardButton.setPreferredSize(new Dimension(128, 32));
+        wizardButton.setPreferredSize(new Dimension(256, 64));
         wizardButton.addActionListener(e -> {
             i = 3;
             printer(i);
@@ -153,7 +154,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelSOUTH.add(wizardButton);
 
         confessorButton = new JButton(GameLauncher.characterArray[4].getName());
-        confessorButton.setPreferredSize(new Dimension(128, 32));
+        confessorButton.setPreferredSize(new Dimension(256, 64));
         confessorButton.addActionListener(e -> {
             i = 4;
             printer(i);
@@ -161,7 +162,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelSOUTH.add(confessorButton);
 
         submitButton = new JButton("submit");
-        submitButton.setPreferredSize(new Dimension(128, 32));
+        submitButton.setPreferredSize(new Dimension(256, 64));
         submitButton.addActionListener(e -> {
             if (i > 0) {
                 GameLauncher.characterArray[0] = GameLauncher.characterArray[i];
@@ -189,8 +190,9 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         knightPicture = new LabelWithIcons();
         knightPicture.setText("Knight");
 
+        warrior = new ImageIcon(Objects.requireNonNull(getClass().getResource("Warrior.png")));
         warriorPicture = new LabelWithIcons();
-        warriorPicture.setText("Warrior");
+        warriorPicture.setIcon(warrior);
 
         wizardPicture = new LabelWithIcons();
         wizardPicture.setText("wizard");

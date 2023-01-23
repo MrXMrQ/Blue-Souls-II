@@ -7,7 +7,7 @@ public class LabelWithIcons extends JLabel {
 
     public LabelWithIcons() {
         setBackground(Color.GRAY);
-        setPreferredSize(new Dimension(128,128));
+        setPreferredSize(new Dimension(256,256));
         setOpaque(true);
 
     }
