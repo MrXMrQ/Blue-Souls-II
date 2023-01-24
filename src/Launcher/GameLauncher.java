@@ -3,6 +3,7 @@ package Launcher;
 import Dungeons.Dungeons;
 import Figures.Character;
 import Figures.Monster;
+import GUI.GameFrame;
 import GUI.MainMenuAndChaSubmitFrames;
 
 public class GameLauncher {
@@ -11,8 +12,12 @@ public class GameLauncher {
 
     public static Dungeons[] dungeonsArray = dungeons();
 
-    public static void gameLauncher() {
-        MainMenuAndChaSubmitFrames theGame = new MainMenuAndChaSubmitFrames();
+    public static void gameMainMenuAndChaSubmitWindowLauncher() {
+        MainMenuAndChaSubmitFrames mainMenuAndChaSubmitFrame = new MainMenuAndChaSubmitFrames();
+    }
+
+    public static void gameWindowLauncher() {
+        GameFrame gameFrame = new GameFrame();
     }
 
     public static Character[] characters() {

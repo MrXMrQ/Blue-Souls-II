@@ -14,7 +14,6 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     //panels
     JPanel panelNORTH;
     JPanel panelCENTER;
-    JPanel panelCENTER_CENTER;
     JPanel panelSOUTH;
     JPanel holder;
 
@@ -84,7 +83,6 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             } else {
                 playerName = textFieldUsername.getText();
                 mainMenuWindow.dispose();
-                panelRemover();
 
                 characterSelectionFrame();
             }
@@ -106,10 +104,31 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         chaSelectWindow = new MyFrame();
         chaSelectWindow.setLayout(new BorderLayout());
 
-
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setAlignOnBaseline(true);
         flowLayout.setHgap(100);
+
+        panelNORTH.removeAll();
+        panelNORTH.setLayout(flowLayout);
+        panelNORTH.setPreferredSize(new Dimension(0,512));
+
+        knightPicture = new LabelWithIcons();
+        knightPicture.setText("Knight");
+        panelNORTH.add(knightPicture);
+
+        warrior = new ImageIcon(Objects.requireNonNull(getClass().getResource("Warrior.png")));
+        warriorPicture = new LabelWithIcons();
+        warriorPicture.setIcon(warrior);
+        panelNORTH.add(warriorPicture);
+
+        wizardPicture = new LabelWithIcons();
+        wizardPicture.setText("wizard");
+        panelNORTH.add(wizardPicture);
+
+        confessor = new ImageIcon(Objects.requireNonNull(getClass().getResource("Confessor.png")));
+        confessorPicture = new LabelWithIcons();
+        confessorPicture.setIcon(confessor);
+        panelNORTH.add(confessorPicture);
 
         //Chat Area for stats printing
         textAreaStats = new JTextArea(15, 20);
@@ -124,10 +143,14 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         holder.setOpaque(true);
         holder.add(textAreaStatsPane);
 
+        panelNORTH.add(holder);
+
+        chaSelectWindow.add(panelNORTH, BorderLayout.NORTH);
 
         //button for the classes and stats of each class + submit button for select your class you want to play with
-        panelSOUTH.setLayout(flowLayout);
-        panelSOUTH.setPreferredSize(new Dimension(0, 100));
+        panelCENTER.removeAll();
+        panelCENTER.setLayout(flowLayout);
+        panelCENTER.setPreferredSize(new Dimension(0, 100));
 
         knightButton = new JButton(GameLauncher.characterArray[1].getName());
         knightButton.setPreferredSize(new Dimension(256, 64));
@@ -135,7 +158,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             i = 1;
             printer(i);
         });
-        panelSOUTH.add(knightButton);
+        panelCENTER.add(knightButton);
 
         warriorButton = new JButton(GameLauncher.characterArray[2].getName());
         warriorButton.setPreferredSize(new Dimension(256, 64));
@@ -143,7 +166,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             i = 2;
             printer(i);
         });
-        panelSOUTH.add(warriorButton);
+        panelCENTER.add(warriorButton);
 
         wizardButton = new JButton(GameLauncher.characterArray[3].getName());
         wizardButton.setPreferredSize(new Dimension(256, 64));
@@ -151,7 +174,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             i = 3;
             printer(i);
         });
-        panelSOUTH.add(wizardButton);
+        panelCENTER.add(wizardButton);
 
         confessorButton = new JButton(GameLauncher.characterArray[4].getName());
         confessorButton.setPreferredSize(new Dimension(256, 64));
@@ -159,7 +182,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             i = 4;
             printer(i);
         });
-        panelSOUTH.add(confessorButton);
+        panelCENTER.add(confessorButton);
 
         submitButton = new JButton("submit");
         submitButton.setPreferredSize(new Dimension(256, 64));
@@ -168,63 +191,25 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
                 GameLauncher.characterArray[0] = GameLauncher.characterArray[i];
                 GameLauncher.characterArray[0].setName(playerName);
                 chaSelectWindow.dispose();
-                GameFrame.gameFrame();
+                GameLauncher.gameWindowLauncher();
 
             } else {
                 textAreaStats.setText("");
-                textAreaStats.append("   Error please select a class");
+                textAreaStats.append("Error please select a class");
 
             }
         });
 
-        panelSOUTH.add(submitButton);
+        panelCENTER.add(submitButton);
 
-        chaSelectWindow.add(panelSOUTH, BorderLayout.SOUTH); //add the panelSOUTH with all buttons
-
-
-        panelCENTER.setLayout(new BorderLayout());
-
-        panelCENTER_CENTER = new JPanel(flowLayout);
-        panelCENTER_CENTER.setPreferredSize(new Dimension(0, 400));
-
-        knightPicture = new LabelWithIcons();
-        knightPicture.setText("Knight");
-
-        warrior = new ImageIcon(Objects.requireNonNull(getClass().getResource("Warrior.png")));
-        warriorPicture = new LabelWithIcons();
-        warriorPicture.setIcon(warrior);
-
-        wizardPicture = new LabelWithIcons();
-        wizardPicture.setText("wizard");
-
-        confessor = new ImageIcon(Objects.requireNonNull(getClass().getResource("Confessor.png")));
-        confessorPicture = new LabelWithIcons();
-        confessorPicture.setIcon(confessor);
-
-        panelCENTER_CENTER.add(knightPicture);
-        panelCENTER_CENTER.add(warriorPicture);
-        panelCENTER_CENTER.add(wizardPicture);
-        panelCENTER_CENTER.add(confessorPicture);
-        panelCENTER_CENTER.add(holder);
+        chaSelectWindow.add(panelCENTER, BorderLayout.CENTER); //add the panelSOUTH with all buttons
 
 
-        headline.setText("choose your class");
-        headline.setFont(new Font("Inter", Font.BOLD, 50));
 
-        panelCENTER.add(headline, BorderLayout.NORTH);
-
-        panelCENTER.add(panelCENTER_CENTER, BorderLayout.CENTER);
-        chaSelectWindow.add(panelCENTER, BorderLayout.CENTER);
     }
 
     public void printer(int i) {
         textAreaStats.setText("");
-        textAreaStats.append("            Name: " + GameLauncher.characterArray[i].getName() + "\n            Healthpoints: " + GameLauncher.characterArray[i].getHealthpoints() + "\n            Staminapoints: " + GameLauncher.characterArray[i].getStaminapoints() + "\n            Damage: " + GameLauncher.characterArray[i].getDamage() + "\n            Ringslots: " + GameLauncher.characterArray[i].getRingslots() + "\n            Healthpotion: " + GameLauncher.characterArray[i].getRingslots() + "\n            Fist: " + GameLauncher.characterArray[i].getFist());
-    }
-
-    public void panelRemover() {
-        panelNORTH.removeAll();
-        panelCENTER.removeAll();
-        panelSOUTH.removeAll();
+        textAreaStats.append("Name: " + GameLauncher.characterArray[i].getName() + "\nHealthpoints: " + GameLauncher.characterArray[i].getHealthpoints() + "\nStaminapoints: " + GameLauncher.characterArray[i].getStaminapoints() + "\nDamage: " + GameLauncher.characterArray[i].getDamage() + "\nRingslots: " + GameLauncher.characterArray[i].getRingslots() + "\nHealthpotion: " + GameLauncher.characterArray[i].getRingslots() + "\nFist: " + GameLauncher.characterArray[i].getFist());
     }
 }
