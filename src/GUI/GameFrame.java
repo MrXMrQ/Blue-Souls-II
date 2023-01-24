@@ -15,12 +15,12 @@ public class GameFrame {
     JButton button3;
 
     public GameFrame() {
-        gameFrame();
+        gameDungeonSelection();
     }
 
-    public void gameFrame() {
-        MyFrame gameWindow = new MyFrame();
-        gameWindow.setLayout(new BorderLayout());
+    public void gameDungeonSelection() {
+        MyFrame gameDungeonWindow = new MyFrame();
+        gameDungeonWindow.setLayout(new BorderLayout());
 
         randomDungeons();
 
@@ -42,7 +42,7 @@ public class GameFrame {
         panelNORTH.add(cave2);
         panelNORTH.add(cave3);
 
-        gameWindow.add(panelNORTH, BorderLayout.NORTH);
+        gameDungeonWindow.add(panelNORTH, BorderLayout.NORTH);
 
 
         JPanel panelCENTER = new JPanel(flowLayout);
@@ -60,10 +60,14 @@ public class GameFrame {
         panelCENTER.add(button2);
         panelCENTER.add(button3);
 
-        gameWindow.add(panelCENTER, BorderLayout.CENTER);
+        gameDungeonWindow.add(panelCENTER, BorderLayout.CENTER);
     }
 
-    public static void randomDungeons() {
+    public void gameFight() {
+        MyFrame gameFightWindow = new MyFrame();
+    }
+
+    public void randomDungeons() {
         List<Dungeons> list = Arrays.asList(GameLauncher.dungeonsArray);
         Collections.shuffle(list);
         list.toArray(GameLauncher.dungeonsArray);
