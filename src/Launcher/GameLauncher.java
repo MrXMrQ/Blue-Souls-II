@@ -32,20 +32,20 @@ public class GameLauncher {
     }
 
     public static Monster[] monsters() {
-        Monster bot = new Monster("BOT", 999, 999, 999, "BOT", false, false);
-
         Monster golem = new Monster("Golem", 50, 50, 50, "cave", false, false);
         Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", false, false);
         Monster gargoyle = new Monster("Gargoyle", 50,50,50,"cave", false,false);
 
-        return new Monster[]{bot, golem, caveSpider, gargoyle};
+        Monster raptor = new Monster("Raptor", 50,50,50,"jungle", false,false);
+
+        return new Monster[]{golem, caveSpider, gargoyle, raptor};
     }
 
     public static Dungeons[] dungeons() {
         Dungeons caveSystem = new Dungeons("Cave System", 1,5,false,"cave");
-        Dungeons mineshaft = new Dungeons("Mineshaft", 1,5,false,"cave");
-        Dungeons deepDark = new Dungeons("Deep dark", 1,5,false,"cave");
-        Dungeons lavaTube = new Dungeons("Lava Tube", 1, 5, false, "cave");
+        Dungeons mineshaft = new Dungeons("Mineshaft", 5,12,false,"cave");
+        Dungeons deepDark = new Dungeons("Deep dark", 8,14,false,"cave");
+        Dungeons lavaTube = new Dungeons("Lava Tube", 10, 15, false, "cave");
 
 
         return new Dungeons[]{caveSystem, mineshaft, deepDark, lavaTube};
