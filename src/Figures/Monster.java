@@ -2,14 +2,14 @@ package Figures;
 
 public class Monster extends Figur {
     protected int schaden;
-    protected String kind;
+    protected String type;
     protected boolean weapon;
     protected boolean weapondrop;
 
-    public Monster(String name, int healthpoints, int staminapoints, int schaden, String kind, boolean weapon, boolean weapondrop) {
+    public Monster(String name, int healthpoints, int staminapoints, int schaden, String type, boolean weapon, boolean weapondrop) {
         super(name, healthpoints, staminapoints);
         this.schaden = schaden;
-        this.kind = kind;
+        this.type = type;
         this.weapon = weapon;
         this.weapondrop = weapondrop;
     }
@@ -22,12 +22,12 @@ public class Monster extends Figur {
         this.schaden = schaden;
     }
 
-    public String getKind() {
-        return kind;
+    public String getType() {
+        return type;
     }
 
-    public void setKind(String kind) {
-        this.kind = kind;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public boolean isWeapon() {

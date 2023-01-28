@@ -36,20 +36,20 @@ public class GameFrame {
 
     //Windows
     MyFrame gameFightWindow;
+    MyFrame gameDungeonWindow;
 
-    Monster bot = new Monster("BOT", 999, 999, 999, "BOT", false, false);
-
+    //Other stuff
+    Monster bot;
     Dungeons chooseDungeon;
     int layers;
-    boolean newWindow;
-    Monster[] dungeonMonster;
+    int counter;
 
     public GameFrame() {
         gameDungeonSelection();
     }
 
     public void gameDungeonSelection() {
-        MyFrame gameDungeonWindow = new MyFrame();
+        gameDungeonWindow = new MyFrame();
         gameDungeonWindow.setLayout(new BorderLayout());
 
         randomDungeons();
@@ -81,24 +81,21 @@ public class GameFrame {
         button1.setPreferredSize(new Dimension(256, 64));
         button1.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[0];
-            gameFight();
-            gameDungeonWindow.dispose();
+            prepareGameFight();
         });
 
         button2 = new JButton(GameLauncher.dungeonsArray[1].getName());
         button2.setPreferredSize(new Dimension(256, 64));
         button2.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[1];
-            gameFight();
-            gameDungeonWindow.dispose();
+            prepareGameFight();
         });
 
         button3 = new JButton(GameLauncher.dungeonsArray[2].getName());
         button3.setPreferredSize(new Dimension(256, 64));
         button3.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[2];
-            gameFight();
-            gameDungeonWindow.dispose();
+            prepareGameFight();
         });
 
         panelCENTER.add(button1);
@@ -108,54 +105,14 @@ public class GameFrame {
         gameDungeonWindow.add(panelCENTER, BorderLayout.CENTER);
     }
 
-    public void gameFight() {
-        layers = (int) (Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel() + 1)) + chooseDungeon.getLowLevel();
+    private void prepareGameFight() {
         randomMonster();
+        layers = (int) ((Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel())) + chooseDungeon.getLowLevel());
+        counter = 1;
+        gameDungeonWindow.dispose();
 
-    }
+        gameFight();
 
-    public void ahh() {
-        int counter = 0;
-        bot = dungeonMonster[counter];
-        counter++;
-
-        gameFightWindow = new MyFrame();
-        gameFightWindow.setLayout(new BorderLayout());
-
-        panelNORTH = new JPanel();
-        panelNORTH.setLayout(flowLayout);
-
-        monster = new LabelWithIcons();
-        monster.setText(bot.getName());
-        panelNORTH.add(monster);
-
-        gameFightWindow.add(panelNORTH, BorderLayout.NORTH);
-
-
-        panelCENTER.removeAll();
-        panelCENTER.setLayout(flowLayout);
-
-        attackButton = new JButton("Attack");
-        attackButton.setPreferredSize(new Dimension(256, 64));
-        attackButton.addActionListener(e -> {
-            bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage());
-            ifPLayerDead();
-        });
-        panelCENTER.add(attackButton);
-
-        healButton = new JButton("Heal");
-        healButton.setPreferredSize(new Dimension(256, 64));
-        panelCENTER.add(healButton);
-
-        inventoryButton = new JButton("Inventory");
-        inventoryButton.setPreferredSize(new Dimension(256, 64));
-        panelCENTER.add(inventoryButton);
-
-        equipButton = new JButton("Equipment");
-        equipButton.setPreferredSize(new Dimension(256, 64));
-        panelCENTER.add(equipButton);
-
-        gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
     }
 
     public void randomDungeons() {
@@ -165,16 +122,107 @@ public class GameFrame {
 
     }
 
+    public void gameFight() {
+        if (counter == layers) {
+            gameDungeonSelection();
+            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers);
+        } else {
+            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers);
+            gameFightWindow = new MyFrame();
+            gameFightWindow.setLayout(new BorderLayout());
+
+            panelNORTH = new JPanel();
+            panelNORTH.setLayout(flowLayout);
+
+            monster = new LabelWithIcons();
+            monster.setText(bot.getName());
+            panelNORTH.add(monster);
+
+            gameFightWindow.add(panelNORTH, BorderLayout.NORTH);
+
+
+            panelCENTER.removeAll();
+            panelCENTER.setLayout(flowLayout);
+
+            attackButton = new JButton("Attack");
+            attackButton.setPreferredSize(new Dimension(256, 64));
+            attackButton.addActionListener(e -> {
+                bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage());
+                System.out.println(bot.getHealthpoints() + " " + GameLauncher.characterArray[0].getHealthpoints());
+                ifBotDead();
+            });
+            panelCENTER.add(attackButton);
+
+            healButton = new JButton("Heal");
+            healButton.setPreferredSize(new Dimension(256, 64));
+            panelCENTER.add(healButton);
+
+            inventoryButton = new JButton("Inventory");
+            inventoryButton.setPreferredSize(new Dimension(256, 64));
+            panelCENTER.add(inventoryButton);
+
+            equipButton = new JButton("Equipment");
+            equipButton.setPreferredSize(new Dimension(256, 64));
+            panelCENTER.add(equipButton);
+
+            gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
+        }
+    }
+
     public void randomMonster() {
         List<Monster> list = Arrays.asList(GameLauncher.monsterArray);
         Collections.shuffle(list);
         list.toArray(GameLauncher.monsterArray);
+
+        if (GameLauncher.monsterArray[0].getType().equals(chooseDungeon.getType())) {
+            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getSchaden(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isWeapon(), GameLauncher.monsterArray[0].isWeapondrop());
+        } else {
+            randomMonster();
+        }
     }
 
-    public void ifPLayerDead() {
+    public void ifBotDead() {
+        if (bot.getHealthpoints() <= 0) {
+            gameFightWindow.dispose();
+            randomMonster();
+            counter++;
+            gameFight();
+        } else {
+            botTurn();
+        }
+    }
+
+    public void botTurn() {
+        int botAttack = (int) (Math.random() * 100) + 1;
+        System.out.println(botAttack);
+
+        if (botAttack >= 97) {
+            //lifeSteal
+
+            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
+            bot.setHealthpoints((int) (bot.getSchaden() * 1.5));
+            ifPlayerDead();
+        } else if (botAttack >= 90) {
+            //critical
+
+            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
+            ifPlayerDead();
+        } else if (botAttack >= 50) {
+            //missed attack
+
+            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getSchaden() * 0.5));
+            ifPlayerDead();
+        } else {
+            //normal attack
+
+            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getSchaden());
+            ifPlayerDead();
+        }
+    }
+
+    public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
-            System.out.println("You Died");
-            System.exit(1);
+            System.out.println("Dead");
         }
     }
 }
