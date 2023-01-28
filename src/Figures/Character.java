@@ -4,13 +4,15 @@ public class Character extends Figur {
     protected int damage;
     protected int ringslots;
     protected int healthpotion;
+    protected int healthpotionDealHealth;
     protected int fist;
 
-    public Character(String name, int healthpoints, int staminapoints, int damage, int ringslots, int healthpotion, int fist) {
+    public Character(String name, int healthpoints, int staminapoints, int damage, int ringslots, int healthpotion, int healthpotionDealHealth, int fist) {
         super(name, healthpoints, staminapoints);
         this.damage = damage;
         this.ringslots = ringslots;
         this.healthpotion = healthpotion;
+        this.healthpotionDealHealth = healthpotionDealHealth;
         this.fist = fist;
     }
 
@@ -36,6 +38,14 @@ public class Character extends Figur {
 
     public void setHealthpotion(int healthpotion) {
         this.healthpotion = healthpotion;
+    }
+
+    public int getHealthpotionDealHealth() {
+        return healthpotionDealHealth;
+    }
+
+    public void setHealthpotionDealHealth(int healthpotionDealHealth) {
+        this.healthpotionDealHealth = healthpotionDealHealth;
     }
 
     public int getFist() {

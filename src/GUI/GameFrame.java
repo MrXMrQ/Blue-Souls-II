@@ -126,6 +126,7 @@ public class GameFrame {
         if (counter == layers) {
             gameDungeonSelection();
             System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers);
+
         } else {
             System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers);
             gameFightWindow = new MyFrame();
@@ -155,6 +156,16 @@ public class GameFrame {
 
             healButton = new JButton("Heal");
             healButton.setPreferredSize(new Dimension(256, 64));
+            healButton.addActionListener(event -> {
+                if(GameLauncher.characterArray[0].getHealthpotion() == 0) {
+                    System.out.println("no Heal");
+                } else {
+                    GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth());
+                    GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() - 1);
+                    System.out.println(bot.getHealthpoints() + " " + GameLauncher.characterArray[0].getHealthpoints() + " " + GameLauncher.characterArray[0].getHealthpotion());
+                    ifBotDead();
+                }
+            });
             panelCENTER.add(healButton);
 
             inventoryButton = new JButton("Inventory");
@@ -223,6 +234,8 @@ public class GameFrame {
     public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
             System.out.println("Dead");
+            gameFightWindow.dispose();
+            System.exit(1);
         }
     }
 }
