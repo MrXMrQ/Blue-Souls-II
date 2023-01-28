@@ -110,15 +110,7 @@ public class GameFrame {
 
     public void gameFight() {
         layers = (int) (Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel() + 1)) + chooseDungeon.getLowLevel();
-        dungeonMonster = new Monster[layers];
-
-        for (int i = 0; i < layers; i++) {
-            randomMonster();
-            if (GameLauncher.monsterArray[0].getKind().equals(chooseDungeon.getType())) {
-                dungeonMonster[i] = GameLauncher.monsterArray[0];
-            }
-        }
-        ahh();
+        randomMonster();
 
     }
 
