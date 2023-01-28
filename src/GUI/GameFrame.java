@@ -30,6 +30,7 @@ public class GameFrame {
     //Panels
     JPanel panelNORTH;
     JPanel panelCENTER;
+    JPanel panelSOUTH;
 
     //Layouts
     FlowLayout flowLayout;
@@ -38,11 +39,16 @@ public class GameFrame {
     MyFrame gameFightWindow;
     MyFrame gameDungeonWindow;
 
+    //Progressbar
+    JProgressBar playerHealth;
+
     //Other stuff
     Monster bot;
     Dungeons chooseDungeon;
     int layers;
     int counter;
+    final int min = 0;
+    final int max = GameLauncher.characterArray[0].getHealthpoints();
 
     public GameFrame() {
         gameDungeonSelection();
@@ -186,6 +192,7 @@ public class GameFrame {
             panelCENTER.add(equipButton);
 
             gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
+
         }
     }
 
