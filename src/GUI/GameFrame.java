@@ -125,10 +125,10 @@ public class GameFrame {
     public void gameFight() {
         if (counter == layers) {
             gameDungeonSelection();
-            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers);
+            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
 
         } else {
-            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers);
+            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
             gameFightWindow = new MyFrame();
             gameFightWindow.setLayout(new BorderLayout());
 
@@ -148,21 +148,30 @@ public class GameFrame {
             attackButton = new JButton("Attack");
             attackButton.setPreferredSize(new Dimension(256, 64));
             attackButton.addActionListener(e -> {
-                bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage());
-                System.out.println(bot.getHealthpoints() + " " + GameLauncher.characterArray[0].getHealthpoints());
+                int playerAttack = (int) (Math.random() * 100) + 1;
+                if (playerAttack >= 90) {
+                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage() * 2);
+                    System.out.println("Player attack: " + GameLauncher.characterArray[1].getDamage() * 2);
+
+                } else {
+                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage());
+                    System.out.println("Player attack: " + GameLauncher.characterArray[1].getDamage());
+
+                }
                 ifBotDead();
+
             });
             panelCENTER.add(attackButton);
 
             healButton = new JButton("Heal");
             healButton.setPreferredSize(new Dimension(256, 64));
             healButton.addActionListener(event -> {
-                if(GameLauncher.characterArray[0].getHealthpotion() == 0) {
+                if (GameLauncher.characterArray[0].getHealthpotion() == 0) {
                     System.out.println("no Heal");
                 } else {
                     GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth());
                     GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() - 1);
-                    System.out.println(bot.getHealthpoints() + " " + GameLauncher.characterArray[0].getHealthpoints() + " " + GameLauncher.characterArray[0].getHealthpotion());
+                    System.out.println("Player healthpotion: " + GameLauncher.characterArray[0].getHealthpotion());
                     ifBotDead();
                 }
             });
@@ -194,48 +203,68 @@ public class GameFrame {
 
     public void ifBotDead() {
         if (bot.getHealthpoints() <= 0) {
+            int randomGetHeal = (int) (Math.random() * 100) + 1;
+            if (randomGetHeal >= 90) {
+                GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
+                System.out.println("Heal Drop for player " + GameLauncher.characterArray[0].getHealthpotion());
+
+            }
+
+            System.out.println("Bot dead\n");
             gameFightWindow.dispose();
             randomMonster();
             counter++;
             gameFight();
+
         } else {
             botTurn();
+
         }
     }
 
     public void botTurn() {
         int botAttack = (int) (Math.random() * 100) + 1;
-        System.out.println(botAttack);
+
 
         if (botAttack >= 97) {
             //lifeSteal
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
             bot.setHealthpoints((int) (bot.getSchaden() * 1.5));
+            System.out.println("Bot attack&Heal: " + bot.getSchaden() * 2);
             ifPlayerDead();
+
         } else if (botAttack >= 90) {
             //critical
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
+            System.out.println("Bot attack: " + bot.getSchaden() * 2);
             ifPlayerDead();
+
         } else if (botAttack >= 50) {
             //missed attack
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getSchaden() * 0.5));
+            System.out.println("Bot attack: " + (int) (bot.getSchaden() * 0.5));
             ifPlayerDead();
+
         } else {
             //normal attack
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getSchaden());
+            System.out.println("Bot attack: " + bot.getSchaden());
             ifPlayerDead();
+
         }
     }
 
     public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
-            System.out.println("Dead");
+            System.out.println("Player Dead");
             gameFightWindow.dispose();
             System.exit(1);
         }
+
+        System.out.println("Player Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\nBot Health: " + bot.getHealthpoints() + "\n");
     }
 }

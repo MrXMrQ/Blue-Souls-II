@@ -42,7 +42,7 @@ public class GameLauncher {
     }
 
     public static Dungeons[] dungeons() {
-        Dungeons caveSystem = new Dungeons("Cave System", 1, 5, false, "cave");
+        Dungeons caveSystem = new Dungeons("Cave System", 2, 5, false, "cave");
         Dungeons mineshaft = new Dungeons("Mineshaft", 5, 12, false, "cave");
         Dungeons deepDark = new Dungeons("Deep dark", 8, 14, false, "cave");
         Dungeons lavaTube = new Dungeons("Lava Tube", 10, 15, false, "cave");
