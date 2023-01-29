@@ -3,6 +3,8 @@ package GUI;
 import Dungeons.Dungeons;
 import Figures.Monster;
 import Launcher.GameLauncher;
+import PlayerInventorys.Equip;
+import PlayerInventorys.Inventory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -156,12 +158,12 @@ public class GameFrame {
             attackButton.addActionListener(e -> {
                 int playerAttack = (int) (Math.random() * 100) + 1;
                 if (playerAttack >= 90) {
-                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage() * 2);
-                    System.out.println("Player attack: " + GameLauncher.characterArray[1].getDamage() * 2);
+                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage() * 2);
+                    System.out.println("Player attack: " + GameLauncher.characterArray[0].getDamage() * 2);
 
                 } else {
-                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[1].getDamage());
-                    System.out.println("Player attack: " + GameLauncher.characterArray[1].getDamage());
+                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage());
+                    System.out.println("Player attack: " + GameLauncher.characterArray[0].getDamage());
 
                 }
                 ifBotDead();
@@ -185,6 +187,7 @@ public class GameFrame {
 
             inventoryButton = new JButton("Inventory");
             inventoryButton.setPreferredSize(new Dimension(256, 64));
+            inventoryButton.addActionListener(event -> Inventory.inventoryWindow());
             panelCENTER.add(inventoryButton);
 
             equipButton = new JButton("Equipment");
@@ -202,7 +205,7 @@ public class GameFrame {
         list.toArray(GameLauncher.monsterArray);
 
         if (GameLauncher.monsterArray[0].getType().equals(chooseDungeon.getType())) {
-            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getSchaden(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isWeapon(), GameLauncher.monsterArray[0].isWeapondrop());
+            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getSchaden(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isWeapon(), GameLauncher.monsterArray[0].isWeapondrop(), GameLauncher.monsterArray[0].getSouls());
         } else {
             randomMonster();
         }
@@ -217,7 +220,8 @@ public class GameFrame {
 
             }
 
-            System.out.println("Bot dead\n");
+            GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
+            System.out.println("Bot dead\nSouls: " + bot.getSouls() + "\nPlayer Souls: " + GameLauncher.characterArray[0].getSouls() + "\n");
             gameFightWindow.dispose();
             randomMonster();
             counter++;

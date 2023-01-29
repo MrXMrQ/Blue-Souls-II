@@ -5,13 +5,15 @@ public class Monster extends Figur {
     protected String type;
     protected boolean weapon;
     protected boolean weapondrop;
+    protected int souls;
 
-    public Monster(String name, int healthpoints, int staminapoints, int schaden, String type, boolean weapon, boolean weapondrop) {
+    public Monster(String name, int healthpoints, int staminapoints, int schaden, String type, boolean weapon, boolean weapondrop, int souls) {
         super(name, healthpoints, staminapoints);
         this.schaden = schaden;
         this.type = type;
         this.weapon = weapon;
         this.weapondrop = weapondrop;
+        this.souls = souls;
     }
 
     public int getSchaden() {
@@ -44,5 +46,13 @@ public class Monster extends Figur {
 
     public void setWeapondrop(boolean weapondrop) {
         this.weapondrop = weapondrop;
+    }
+
+    public int getSouls() {
+        return souls;
+    }
+
+    public void setSouls(int souls) {
+        this.souls = souls;
     }
 }

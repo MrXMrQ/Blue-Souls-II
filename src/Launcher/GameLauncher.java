@@ -21,22 +21,22 @@ public class GameLauncher {
     }
 
     public static Character[] characters() {
-        Character player = new Character("PLAYER", 999, 999, 999, 999, 999, 999, 0);
+        Character player = new Character("PLAYER", 999, 999, 999, 999, 999, 999, 0, 0);
 
-        Character knight = new Character("Knight", 1000, 100, 999, 4, 4, 250, 0);
-        Character warrior = new Character("Warrior", 100, 100, 100, 4, 4, 250, 0);
-        Character wizard = new Character("Wizard", 100, 100, 100, 4, 4, 250, 0);
-        Character confessor = new Character("Confessor", 100, 100, 100, 4, 4, 250, 0);
+        Character knight = new Character("Knight", 1000, 100, 999, 4, 4, 250, 0, 0);
+        Character warrior = new Character("Warrior", 100, 100, 100, 4, 4, 250, 0, 0);
+        Character wizard = new Character("Wizard", 100, 100, 100, 4, 4, 250, 0, 0);
+        Character confessor = new Character("Confessor", 100, 100, 100, 4, 4, 250, 0, 0);
 
         return new Character[]{player, knight, warrior, wizard, confessor};
     }
 
     public static Monster[] monsters() {
-        Monster golem = new Monster("Golem", 50, 50, 50, "cave", false, false);
-        Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", false, false);
-        Monster gargoyle = new Monster("Gargoyle", 50, 50, 50, "cave", false, false);
+        Monster golem = new Monster("Golem", 50, 50, 50, "cave", false, false, 10);
+        Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", false, false, 10);
+        Monster gargoyle = new Monster("Gargoyle", 50, 50, 50, "cave", false, false, 10);
 
-        Monster raptor = new Monster("Raptor", 50, 50, 50, "jungle", false, false);
+        Monster raptor = new Monster("Raptor", 50, 50, 50, "jungle", false, false, 10);
 
         return new Monster[]{golem, caveSpider, gargoyle, raptor};
     }
