@@ -37,6 +37,8 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     //icons
     Icon confessor;
     Icon warrior;
+    Icon wizard;
+    Icon knight;
 
     //other components or variables
     JTextField textFieldUsername;
@@ -112,8 +114,9 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         panelNORTH.setLayout(flowLayout);
         panelNORTH.setPreferredSize(new Dimension(0,512));
 
+        knight = new ImageIcon(Objects.requireNonNull(getClass().getResource("Knight.png")));
         knightPicture = new LabelWithIcons();
-        knightPicture.setText("Knight");
+        knightPicture.setIcon(knight);
         panelNORTH.add(knightPicture);
 
         warrior = new ImageIcon(Objects.requireNonNull(getClass().getResource("Warrior.png")));
@@ -121,8 +124,9 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         warriorPicture.setIcon(warrior);
         panelNORTH.add(warriorPicture);
 
+        wizard = new ImageIcon(Objects.requireNonNull(getClass().getResource("Wizard.png")));
         wizardPicture = new LabelWithIcons();
-        wizardPicture.setText("wizard");
+        wizardPicture.setIcon(wizard);
         panelNORTH.add(wizardPicture);
 
         confessor = new ImageIcon(Objects.requireNonNull(getClass().getResource("Confessor.png")));
