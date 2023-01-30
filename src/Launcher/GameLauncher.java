@@ -23,7 +23,7 @@ public class GameLauncher {
     public static Character[] characters() {
         Character player = new Character("PLAYER", 999, 999, 999, 999, 999, 999, 0, 0);
 
-        Character knight = new Character("Knight", 1000, 100, 999, 4, 4, 250, 0, 0);
+        Character knight = new Character("Knight", 1000, 100, 20, 4, 4, 250, 0, 0);
         Character warrior = new Character("Warrior", 100, 100, 100, 4, 4, 250, 0, 0);
         Character wizard = new Character("Wizard", 100, 100, 100, 4, 4, 250, 0, 0);
         Character confessor = new Character("Confessor", 100, 100, 100, 4, 4, 250, 0, 0);

@@ -3,7 +3,6 @@ package GUI;
 import Dungeons.Dungeons;
 import Figures.Monster;
 import Launcher.GameLauncher;
-import PlayerInventorys.Equip;
 import PlayerInventorys.Inventory;
 
 import javax.swing.*;
@@ -32,7 +31,7 @@ public class GameFrame {
     //Panels
     JPanel panelNORTH;
     JPanel panelCENTER;
-    JPanel panelSOUTH;
+    JPanel holder;
 
     //Layouts
     FlowLayout flowLayout;
@@ -42,15 +41,14 @@ public class GameFrame {
     MyFrame gameDungeonWindow;
 
     //Progressbar
-    JProgressBar playerHealth;
 
     //Other stuff
     Monster bot;
     Dungeons chooseDungeon;
     int layers;
     int counter;
-    final int min = 0;
-    final int max = GameLauncher.characterArray[0].getHealthpoints();
+    JTextArea textAreaFight;
+    JScrollPane textAreaFightPane;
 
     public GameFrame() {
         gameDungeonSelection();
@@ -133,15 +131,30 @@ public class GameFrame {
     public void gameFight() {
         if (counter == layers) {
             gameDungeonSelection();
-            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
+            textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
 
         } else {
-            System.out.println("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
             gameFightWindow = new MyFrame();
             gameFightWindow.setLayout(new BorderLayout());
 
             panelNORTH = new JPanel();
             panelNORTH.setLayout(flowLayout);
+
+            textAreaFight = new JTextArea(15, 20);
+            textAreaFight.setEditable(false);
+            textAreaFight.setLineWrap(true);
+            textAreaFight.setWrapStyleWord(true);
+            textAreaFight.setFont(new Font("Inter", Font.PLAIN, 13));
+            textAreaFightPane = new JScrollPane(textAreaFight);
+
+            holder = new JPanel();
+            holder.setPreferredSize(new Dimension(256, 256));
+            holder.setOpaque(true);
+            holder.add(textAreaFightPane);
+
+            panelNORTH.add(holder);
+
+            textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Layers: " + layers + "\n");
 
             monster = new LabelWithIcons();
             monster.setText(bot.getName());
@@ -159,11 +172,11 @@ public class GameFrame {
                 int playerAttack = (int) (Math.random() * 100) + 1;
                 if (playerAttack >= 90) {
                     bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage() * 2);
-                    System.out.println("Player attack: " + GameLauncher.characterArray[0].getDamage() * 2);
+                    textAreaFight.append("Player Crit damage: " + GameLauncher.characterArray[0].getDamage() * 2 + "\n");
 
                 } else {
                     bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage());
-                    System.out.println("Player attack: " + GameLauncher.characterArray[0].getDamage());
+                    textAreaFight.append("Player damage: " + GameLauncher.characterArray[0].getDamage() + "\n");
 
                 }
                 ifBotDead();
@@ -175,11 +188,11 @@ public class GameFrame {
             healButton.setPreferredSize(new Dimension(256, 64));
             healButton.addActionListener(event -> {
                 if (GameLauncher.characterArray[0].getHealthpotion() == 0) {
-                    System.out.println("no Heal");
+                    textAreaFight.append("no heal potion\n");
                 } else {
                     GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth());
                     GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() - 1);
-                    System.out.println("Player healthpotion: " + GameLauncher.characterArray[0].getHealthpotion());
+                    textAreaFight.append("Player healthpotion: " + GameLauncher.characterArray[0].getHealthpotion() + " healing: " + GameLauncher.characterArray[0].getHealthpotionDealHealth() + "\n");
                     ifBotDead();
                 }
             });
@@ -216,12 +229,12 @@ public class GameFrame {
             int randomGetHeal = (int) (Math.random() * 100) + 1;
             if (randomGetHeal >= 90) {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
-                System.out.println("Heal Drop for player " + GameLauncher.characterArray[0].getHealthpotion());
+                textAreaFight.append("Heal Drop for player " + GameLauncher.characterArray[0].getHealthpotion() + "\n");
 
             }
 
             GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
-            System.out.println("Bot dead\nSouls: " + bot.getSouls() + "\nPlayer Souls: " + GameLauncher.characterArray[0].getSouls() + "\n");
+            textAreaFight.append("Bot dead\nSouls: " + bot.getSouls() + "\nPlayer Souls: " + GameLauncher.characterArray[0].getSouls() + "\n");
             gameFightWindow.dispose();
             randomMonster();
             counter++;
@@ -242,28 +255,28 @@ public class GameFrame {
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
             bot.setHealthpoints((int) (bot.getSchaden() * 1.5));
-            System.out.println("Bot attack&Heal: " + bot.getSchaden() * 2);
+            textAreaFight.append("Bot life steal attack: " + bot.getSchaden() * 2 + "\n");
             ifPlayerDead();
 
         } else if (botAttack >= 90) {
             //critical
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
-            System.out.println("Bot attack: " + bot.getSchaden() * 2);
+            textAreaFight.append("Bot crit attack: " + bot.getSchaden() * 2 + "\n");
             ifPlayerDead();
 
         } else if (botAttack >= 50) {
             //missed attack
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getSchaden() * 0.5));
-            System.out.println("Bot attack: " + (int) (bot.getSchaden() * 0.5));
+            textAreaFight.append("Bot missed attack: " + (int) (bot.getSchaden() * 0.5) + "\n");
             ifPlayerDead();
 
         } else {
             //normal attack
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getSchaden());
-            System.out.println("Bot attack: " + bot.getSchaden());
+            textAreaFight.append("Bot attack: " + bot.getSchaden() + "\n");
             ifPlayerDead();
 
         }
@@ -271,11 +284,10 @@ public class GameFrame {
 
     public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
-            System.out.println("Player Dead");
             gameFightWindow.dispose();
             System.exit(1);
         }
 
-        System.out.println("Player Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\nBot Health: " + bot.getHealthpoints() + "\n");
+        textAreaFight.append("Player Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\n" + bot.getName() + " Health: " + bot.getHealthpoints() + "\n\n");
     }
 }
