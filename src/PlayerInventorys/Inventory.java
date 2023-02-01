@@ -6,6 +6,7 @@ import GUI.MyFrame;
 import Launcher.GameLauncher;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Objects;
 
@@ -71,6 +72,7 @@ public class Inventory {
 
 
         panelEAST = new JPanel(new BorderLayout());
+        panelEAST.setBorder(new LineBorder(Color.BLACK));
 
         labelONEAST_NORTH = new JLabel("STATS", CENTER);
         labelONEAST_NORTH.setFont(new Font("Inter", Font.BOLD, 50));
@@ -151,7 +153,8 @@ public class Inventory {
         invWindow.add(panelWEST, BorderLayout.WEST);
 
 
-        panelWEST_CENTER = new JPanel(new GridLayout(3,1));
+        panelWEST_CENTER = new JPanel(new GridLayout(4,1));
+        panelWEST_CENTER.setBorder(new LineBorder(Color.BLACK));
 
         levelingHeadline = new JLabel("LEVELING", CENTER);
         levelingHeadline.setFont(new Font("Inter", Font.BOLD, 50));
@@ -165,9 +168,9 @@ public class Inventory {
         souls.setFont(new Font("Inter", Font.PLAIN, 15));
         panelWEST_CENTER.add(souls);
 
-        /*availableLevels = new JLabel("Available Levels: " + 0);
+        availableLevels = new JLabel("Available Levels: " + 0);
         availableLevels.setFont(new Font("Inter", Font.PLAIN, 15));
-        panelWEST_CENTER.add(availableLevels);*/
+        panelWEST_CENTER.add(availableLevels);
 
         panelWEST.add(panelWEST_CENTER, BorderLayout.CENTER);
     }
