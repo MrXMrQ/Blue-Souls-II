@@ -200,7 +200,7 @@ public class GameFrame {
 
             inventoryButton = new JButton("Inventory");
             inventoryButton.setPreferredSize(new Dimension(256, 64));
-            inventoryButton.addActionListener(event -> Inventory.inventoryWindow());
+            inventoryButton.addActionListener(event -> new Inventory());
             panelCENTER.add(inventoryButton);
 
             equipButton = new JButton("Equipment");

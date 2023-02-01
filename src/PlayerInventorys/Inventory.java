@@ -1,24 +1,68 @@
 package PlayerInventorys;
 
+import GUI.LabelWithIcons;
+import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
 import Launcher.GameLauncher;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Objects;
 
 import static javax.swing.SwingConstants.*;
 
 public class Inventory {
-    public static void inventoryWindow() {
-        MyFrame invWindow = new MyFrame();
+    //Frames
+    MyFrame invWindow;
+
+    //Panels
+    JPanel panelSOUTH;
+    JPanel panelEAST;
+    JPanel pan1;
+    JPanel pan2;
+    JPanel pan3;
+    JPanel panelONEAST_EAST;
+    JPanel panelONEAST_WEST;
+    JPanel buttonPanel1;
+    JPanel buttonPanel2;
+    JPanel buttonPanel3;
+    JPanel panelWEST;
+    JPanel panelWEST_CENTER;
+
+    //Buttons
+    JButton backButton;
+    JButton button1;
+    JButton button2;
+    JButton button3;
+
+
+    //Labels
+    JLabel labelONEAST_NORTH;
+    JLabel labelHealth;
+    JLabel labelStamina;
+    JLabel labelDamage;
+    JLabel levelingHeadline;
+    JLabel level;
+    JLabel souls;
+    JLabel availableLevels;
+
+    //Other
+    LabelWithIcons playerIcon;
+    int actuallyLevel = 0;
+
+    public Inventory() {
+        inventoryWindow();
+    }
+
+    public void inventoryWindow() {
+        invWindow = new MyFrame();
         invWindow.setTitle("Inventory");
         invWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         invWindow.setLayout(new BorderLayout());
 
-        JPanel panelSOUTH = new JPanel(new FlowLayout());
+        panelSOUTH = new JPanel(new FlowLayout());
 
-        JButton backButton = new JButton("BACK");
+        backButton = new JButton("BACK");
         backButton.setPreferredSize(new Dimension(200, 50));
         backButton.addActionListener(event -> invWindow.dispose());
         panelSOUTH.add(backButton);
@@ -26,29 +70,29 @@ public class Inventory {
         invWindow.add(panelSOUTH, BorderLayout.SOUTH);
 
 
-        JPanel panelEAST = new JPanel(new BorderLayout());
+        panelEAST = new JPanel(new BorderLayout());
 
-        JLabel labelONEAST_NORTH = new JLabel("STATS", CENTER);
+        labelONEAST_NORTH = new JLabel("STATS", CENTER);
         labelONEAST_NORTH.setFont(new Font("Inter", Font.BOLD, 50));
         panelEAST.add(labelONEAST_NORTH, BorderLayout.NORTH);
 
 
-        JPanel panelONEAST_WEST = new JPanel(new GridLayout(3,1));
+        panelONEAST_WEST = new JPanel(new GridLayout(3, 1));
 
-        JPanel pan1 = new JPanel(new FlowLayout());
-        JLabel labelHealth = new JLabel("Healthpoints: " + GameLauncher.characterArray[0].getHealthpoints());
+        pan1 = new JPanel(new FlowLayout());
+        labelHealth = new JLabel("Healthpoints: " + GameLauncher.characterArray[0].getHealthpoints());
         labelHealth.setFont(new Font("Inter", Font.PLAIN, 15));
         pan1.add(labelHealth);
         panelONEAST_WEST.add(pan1);
 
-        JPanel pan2 = new JPanel(new FlowLayout());
-        JLabel labelStamina = new JLabel("Staminapoints: " + GameLauncher.characterArray[0].getStaminapoints());
+        pan2 = new JPanel(new FlowLayout());
+        labelStamina = new JLabel("Staminapoints: " + GameLauncher.characterArray[0].getStaminapoints());
         labelStamina.setFont(new Font("Inter", Font.PLAIN, 15));
         pan2.add(labelStamina);
         panelONEAST_WEST.add(pan2);
 
-        JPanel pan3 = new JPanel(new FlowLayout());
-        JLabel labelDamage = new JLabel("Damage: " + GameLauncher.characterArray[0].getDamage());
+        pan3 = new JPanel(new FlowLayout());
+        labelDamage = new JLabel("Damage: " + GameLauncher.characterArray[0].getDamage());
         labelDamage.setFont(new Font("Inter", Font.PLAIN, 15));
         pan3.add(labelDamage);
         panelONEAST_WEST.add(pan3);
@@ -56,31 +100,75 @@ public class Inventory {
         panelEAST.add(panelONEAST_WEST, BorderLayout.WEST);
 
 
-        JPanel panelONEAST_EAST = new JPanel(new GridLayout(3, 1));
+        panelONEAST_EAST = new JPanel(new GridLayout(3, 1));
         panelONEAST_EAST.setPreferredSize(new Dimension(100, 0));
 
-        JPanel buttonPanel1 = new JPanel(new FlowLayout());
-        JButton button1 = new JButton("Level Up");
+        buttonPanel1 = new JPanel(new FlowLayout());
+        button1 = new JButton("Level Up");
         button1.setPreferredSize(new Dimension(100, 25));
         buttonPanel1.add(button1);
+        panelONEAST_EAST.add(buttonPanel1);
 
-        JPanel buttonPanel2 = new JPanel(new FlowLayout());
-        JButton button2 = new JButton("Level Up");
+        buttonPanel2 = new JPanel(new FlowLayout());
+        button2 = new JButton("Level Up");
         button2.setPreferredSize(new Dimension(100, 25));
         buttonPanel2.add(button2);
+        panelONEAST_EAST.add(buttonPanel2);
 
-        JPanel buttonPanel3 = new JPanel(new FlowLayout());
-        JButton button3 = new JButton("Level Up");
+        buttonPanel3 = new JPanel(new FlowLayout());
+        button3 = new JButton("Level Up");
         button3.setPreferredSize(new Dimension(100, 25));
         buttonPanel3.add(button3);
-
-        panelONEAST_EAST.add(buttonPanel1);
-        panelONEAST_EAST.add(buttonPanel2);
         panelONEAST_EAST.add(buttonPanel3);
+
 
         panelEAST.add(panelONEAST_EAST, BorderLayout.EAST);
 
 
         invWindow.add(panelEAST, BorderLayout.EAST);
+
+
+        panelWEST = new JPanel(new BorderLayout());
+
+        playerIcon = new LabelWithIcons();
+
+        if (Objects.equals(GameLauncher.characterArray[0].getChaClass(), GameLauncher.characterArray[1].getChaClass())) {
+            playerIcon.setIcon(MainMenuAndChaSubmitFrames.knight);
+
+        } else if (Objects.equals(GameLauncher.characterArray[0].getChaClass(), GameLauncher.characterArray[2].getChaClass())) {
+            playerIcon.setIcon(MainMenuAndChaSubmitFrames.warrior);
+
+        } else if (Objects.equals(GameLauncher.characterArray[0].getChaClass(), GameLauncher.characterArray[3].getChaClass())) {
+            playerIcon.setIcon(MainMenuAndChaSubmitFrames.wizard);
+
+        } else if (Objects.equals(GameLauncher.characterArray[0].getChaClass(), GameLauncher.characterArray[4].getChaClass())) {
+            playerIcon.setIcon(MainMenuAndChaSubmitFrames.confessor);
+
+        }
+
+        panelWEST.add(playerIcon, BorderLayout.NORTH);
+
+        invWindow.add(panelWEST, BorderLayout.WEST);
+
+
+        panelWEST_CENTER = new JPanel(new GridLayout(3,1));
+
+        levelingHeadline = new JLabel("LEVELING", CENTER);
+        levelingHeadline.setFont(new Font("Inter", Font.BOLD, 50));
+        panelWEST_CENTER.add(levelingHeadline);
+
+        level = new JLabel("Player Level: " + actuallyLevel);
+        level.setFont(new Font("Inter", Font.PLAIN, 15));
+        panelWEST_CENTER.add(level);
+
+        souls = new JLabel("Souls: " + GameLauncher.characterArray[0].getSouls());
+        souls.setFont(new Font("Inter", Font.PLAIN, 15));
+        panelWEST_CENTER.add(souls);
+
+        /*availableLevels = new JLabel("Available Levels: " + 0);
+        availableLevels.setFont(new Font("Inter", Font.PLAIN, 15));
+        panelWEST_CENTER.add(availableLevels);*/
+
+        panelWEST.add(panelWEST_CENTER, BorderLayout.CENTER);
     }
 }
