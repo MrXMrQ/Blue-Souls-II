@@ -153,7 +153,7 @@ public class Inventory {
         invWindow.add(panelWEST, BorderLayout.WEST);
 
 
-        panelWEST_CENTER = new JPanel(new GridLayout(4,1));
+        panelWEST_CENTER = new JPanel(new GridLayout(4, 1));
         panelWEST_CENTER.setBorder(new LineBorder(Color.BLACK));
 
         levelingHeadline = new JLabel("LEVELING", CENTER);
@@ -168,7 +168,7 @@ public class Inventory {
         souls.setFont(new Font("Inter", Font.PLAIN, 15));
         panelWEST_CENTER.add(souls);
 
-        availableLevels = new JLabel("Available Levels: " + 0);
+        availableLevels = new JLabel("Available Levels: ");
         availableLevels.setFont(new Font("Inter", Font.PLAIN, 15));
         panelWEST_CENTER.add(availableLevels);
 
