@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GameFrame {
+public class GameFrame extends Thread {
     //Buttons
     JButton button1;
     JButton button2;
@@ -117,7 +117,11 @@ public class GameFrame {
         counter = 0;
         gameDungeonWindow.dispose();
 
-        gameFight();
+        //gameFight();
+        gameFightWindow = new MyFrame();
+        Thread gameFightThread = new Thread(this::gameFight);
+        gameFightThread.start();
+
     }
 
     public void randomDungeons() {
@@ -129,11 +133,12 @@ public class GameFrame {
 
     public void gameFight() {
         if (counter == layers) {
+            gameFightWindow.dispose();
             gameDungeonSelection();
             textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
 
         } else {
-            gameFightWindow = new MyFrame();
+
             gameFightWindow.setLayout(new BorderLayout());
 
             panelNORTH = new JPanel();
@@ -143,17 +148,17 @@ public class GameFrame {
             textAreaFight.setEditable(false);
             textAreaFight.setLineWrap(true);
             textAreaFight.setWrapStyleWord(true);
-            textAreaFight.setFont(new Font("Inter", Font.PLAIN, 13));
+            textAreaFight.setFont(new Font("Inter", Font.PLAIN, 15));
             textAreaFightPane = new JScrollPane(textAreaFight);
 
             holder = new JPanel();
-            holder.setPreferredSize(new Dimension(256, 256));
+            holder.setPreferredSize(new Dimension(260, 256));
             holder.setOpaque(true);
             holder.add(textAreaFightPane);
 
             panelNORTH.add(holder);
 
-            textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Layers: " + layers + "\n");
+            textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Layers: " + layers + "\nOn Layer: " + counter + "\n\n");
 
             monster = new LabelWithIcons();
             monster.setText(bot.getName());
@@ -188,6 +193,8 @@ public class GameFrame {
             healButton.addActionListener(event -> {
                 if (GameLauncher.characterArray[0].getHealthpotion() == 0) {
                     textAreaFight.append("no heal potion\n");
+                } else if(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth() > GameLauncher.characterArray[0].getMaxHealth()) {
+                    textAreaFight.append("You cant over heal\n\n");
                 } else {
                     GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth());
                     GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() - 1);
@@ -225,16 +232,19 @@ public class GameFrame {
 
     public void ifBotDead() {
         if (bot.getHealthpoints() <= 0) {
+            GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
             int randomGetHeal = (int) (Math.random() * 100) + 1;
+
             if (randomGetHeal >= 90) {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
                 textAreaFight.append("Heal Drop for player " + GameLauncher.characterArray[0].getHealthpotion() + "\n");
 
             }
 
-            GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
-            textAreaFight.append("Bot dead\nSouls: " + bot.getSouls() + "\nPlayer Souls: " + GameLauncher.characterArray[0].getSouls() + "\n");
-            gameFightWindow.dispose();
+            gameFightWindow.getContentPane().removeAll();
+            gameFightWindow.repaint();
+            gameFightWindow.setSize(781, 480);
+            gameFightWindow.setSize(780, 480);
             randomMonster();
             counter++;
             gameFight();

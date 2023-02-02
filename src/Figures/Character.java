@@ -8,8 +8,9 @@ public class Character extends Figur {
     protected int fist;
     protected int souls;
     protected String chaClass;
+    protected int maxHealth;
 
-    public Character(String name, int healthpoints, int staminapoints, int damage, int ringslots, int healthpotion, int healthpotionDealHealth, int fist, int souls, String chaClass) {
+    public Character(String name, int healthpoints, int staminapoints, int damage, int ringslots, int healthpotion, int healthpotionDealHealth, int fist, int souls, String chaClass, int maxHealth) {
         super(name, healthpoints, staminapoints);
         this.damage = damage;
         this.ringslots = ringslots;
@@ -18,6 +19,7 @@ public class Character extends Figur {
         this.fist = fist;
         this.souls = souls;
         this.chaClass = chaClass;
+        this.maxHealth = maxHealth;
     }
 
     public int getDamage() {
@@ -74,5 +76,13 @@ public class Character extends Figur {
 
     public void setChaClass(String chaClass) {
         this.chaClass = chaClass;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 }

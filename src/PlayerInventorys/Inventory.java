@@ -32,7 +32,7 @@ public class Inventory {
 
     //Buttons
     JButton backButton;
-    JButton button1;
+    JButton levelUPHealthButton;
     JButton button2;
     JButton button3;
 
@@ -50,9 +50,13 @@ public class Inventory {
     //Other
     LabelWithIcons playerIcon;
     int actuallyLevel = 0;
+    Thread inventoryThread;
 
     public Inventory() {
-        inventoryWindow();
+        //inventoryWindow();
+        inventoryThread = new Thread(this::inventoryWindow);
+        inventoryThread.start();
+
     }
 
     public void inventoryWindow() {
@@ -65,7 +69,11 @@ public class Inventory {
 
         backButton = new JButton("CLOSE");
         backButton.setPreferredSize(new Dimension(200, 50));
-        backButton.addActionListener(event -> invWindow.dispose());
+        backButton.addActionListener(event -> {
+            invWindow.dispose();
+            //noinspection deprecation
+            inventoryThread.stop();
+        });
         panelSOUTH.add(backButton);
 
         invWindow.add(panelSOUTH, BorderLayout.SOUTH);
@@ -106,9 +114,9 @@ public class Inventory {
         panelONEAST_EAST.setPreferredSize(new Dimension(100, 0));
 
         buttonPanel1 = new JPanel(new FlowLayout());
-        button1 = new JButton("Level Up");
-        button1.setPreferredSize(new Dimension(100, 25));
-        buttonPanel1.add(button1);
+        levelUPHealthButton = new JButton("Level Up");
+        levelUPHealthButton.setPreferredSize(new Dimension(100, 25));
+        buttonPanel1.add(levelUPHealthButton);
         panelONEAST_EAST.add(buttonPanel1);
 
         buttonPanel2 = new JPanel(new FlowLayout());
@@ -173,5 +181,19 @@ public class Inventory {
         panelWEST_CENTER.add(availableLevels);
 
         panelWEST.add(panelWEST_CENTER, BorderLayout.CENTER);
+
+        updater();
+    }
+
+    public void updater() {
+        while (inventoryThread.isAlive()) {
+            souls.setText("Souls: " +  GameLauncher.characterArray[0].getSouls());
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Test");
+        }
     }
 }

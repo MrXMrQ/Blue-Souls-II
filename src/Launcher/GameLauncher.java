@@ -21,12 +21,12 @@ public class GameLauncher {
     }
 
     public static Character[] characters() {
-        Character player = new Character("PLAYER", 999, 999, 999, 999, 999, 999, 0, 0, "PLAYER");
+        Character player = new Character("PLAYER", 999, 999, 999, 999, 999, 999, 0, 0, "PLAYER", 999);
 
-        Character knight = new Character("Knight", 99999, 100, 20, 4, 4, 250, 0, 100000, "Knight");
-        Character warrior = new Character("Warrior", 100, 100, 100, 4, 4, 250, 0, 0, "Warrior");
-        Character wizard = new Character("Wizard", 100, 100, 100, 4, 4, 250, 0, 0, "Wizard");
-        Character confessor = new Character("Confessor", 100, 100, 100, 4, 4, 250, 0, 0, "Confessor");
+        Character knight = new Character("Knight", 99999999, 100, 20, 4, 4, 250, 0, 0, "Knight",1000);
+        Character warrior = new Character("Warrior", 100, 100, 100, 4, 4, 250, 0, 0, "Warrior",1000);
+        Character wizard = new Character("Wizard", 100, 100, 100, 4, 4, 250, 0, 0, "Wizard",1000);
+        Character confessor = new Character("Confessor", 100, 100, 100, 4, 4, 250, 0, 0, "Confessor",1000);
 
         return new Character[]{player, knight, warrior, wizard, confessor};
     }
