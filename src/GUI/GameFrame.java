@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GameFrame extends Thread {
+public class GameFrame {
     //Buttons
     JButton button1;
     JButton button2;

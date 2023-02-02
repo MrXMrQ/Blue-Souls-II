@@ -1,7 +1,6 @@
 package Threads;
 
-public class MyThread extends Thread {
-
+public class MyRunnable implements Runnable{
     @Override
     public void run() {
 

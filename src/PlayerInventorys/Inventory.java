@@ -56,7 +56,6 @@ public class Inventory {
     }
 
     public void inventoryWindow() {
-
         invWindow = new MyFrame();
         invWindow.setTitle("Inventory");
         invWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -64,7 +63,7 @@ public class Inventory {
 
         panelSOUTH = new JPanel(new FlowLayout());
 
-        backButton = new JButton("BACK");
+        backButton = new JButton("CLOSE");
         backButton.setPreferredSize(new Dimension(200, 50));
         backButton.addActionListener(event -> invWindow.dispose());
         panelSOUTH.add(backButton);
