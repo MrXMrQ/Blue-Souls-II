@@ -51,9 +51,10 @@ public class Inventory {
     LabelWithIcons playerIcon;
     int actuallyLevel = 0;
     Thread inventoryThread;
+    int coast;
+    int maxHealth = 200;
 
     public Inventory() {
-        //inventoryWindow();
         inventoryThread = new Thread(this::inventoryWindow);
         inventoryThread.start();
 
@@ -90,7 +91,7 @@ public class Inventory {
         panelONEAST_WEST = new JPanel(new GridLayout(3, 1));
 
         pan1 = new JPanel(new FlowLayout());
-        labelHealth = new JLabel("Healthpoints: " + GameLauncher.characterArray[0].getHealthpoints());
+        labelHealth = new JLabel("Healthpoints: " + GameLauncher.characterArray[0].getMaxHealth());
         labelHealth.setFont(new Font("Inter", Font.PLAIN, 15));
         pan1.add(labelHealth);
         panelONEAST_WEST.add(pan1);
@@ -187,7 +188,8 @@ public class Inventory {
 
     public void updater() {
         while (inventoryThread.isAlive()) {
-            souls.setText("Souls: " +  GameLauncher.characterArray[0].getSouls());
+            souls.setText("Souls: " + GameLauncher.characterArray[0].getSouls());
+            labelHealth.setText("Healthpoints: " + GameLauncher.characterArray[0].getMaxHealth());
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
