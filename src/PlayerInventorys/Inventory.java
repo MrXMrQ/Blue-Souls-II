@@ -56,6 +56,7 @@ public class Inventory {
     }
 
     public void inventoryWindow() {
+
         invWindow = new MyFrame();
         invWindow.setTitle("Inventory");
         invWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

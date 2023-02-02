@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GameFrame {
+public class GameFrame extends Thread {
     //Buttons
     JButton button1;
     JButton button2;
@@ -114,11 +114,10 @@ public class GameFrame {
     private void prepareGameFight() {
         randomMonster();
         layers = (int) ((Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel())) + chooseDungeon.getLowLevel());
-        counter = 1;
+        counter = 0;
         gameDungeonWindow.dispose();
 
         gameFight();
-
     }
 
     public void randomDungeons() {
