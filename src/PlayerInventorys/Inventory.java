@@ -33,8 +33,8 @@ public class Inventory {
     //Buttons
     JButton backButton;
     JButton levelUPHealthButton;
-    JButton button2;
-    JButton button3;
+    JButton levelUPStaminaButton;
+    JButton LevelUPDamageButton;
 
 
     //Labels
@@ -51,8 +51,11 @@ public class Inventory {
     LabelWithIcons playerIcon;
     int actuallyLevel = 0;
     Thread inventoryThread;
-    int coast;
+    int cost = 10;
     int maxHealth = 200;
+    int maxStamina = 20;
+    int damageMultiplier = 10;
+    int availableLevel = 0;
 
     public Inventory() {
         inventoryThread = new Thread(this::inventoryWindow);
@@ -61,6 +64,7 @@ public class Inventory {
     }
 
     public void inventoryWindow() {
+        System.out.println(maxHealth);
         invWindow = new MyFrame();
         invWindow.setTitle("Inventory");
         invWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -97,7 +101,7 @@ public class Inventory {
         panelONEAST_WEST.add(pan1);
 
         pan2 = new JPanel(new FlowLayout());
-        labelStamina = new JLabel("Staminapoints: " + GameLauncher.characterArray[0].getStaminapoints());
+        labelStamina = new JLabel("Staminapoints: " + GameLauncher.characterArray[0].getMaxStamina());
         labelStamina.setFont(new Font("Inter", Font.PLAIN, 15));
         pan2.add(labelStamina);
         panelONEAST_WEST.add(pan2);
@@ -117,19 +121,46 @@ public class Inventory {
         buttonPanel1 = new JPanel(new FlowLayout());
         levelUPHealthButton = new JButton("Level Up");
         levelUPHealthButton.setPreferredSize(new Dimension(100, 25));
+        levelUPHealthButton.addActionListener(event -> {
+            if (availableLevel > 0) {
+                GameLauncher.characterArray[0].setMaxHealth(GameLauncher.characterArray[0].getMaxHealth() + maxHealth);
+                labelHealth.repaint();
+                availableLevel = availableLevel - 1;
+                availableLevels.setText("Available Levels: " + availableLevel);
+                maxHealth *=1.1;
+            }
+        });
         buttonPanel1.add(levelUPHealthButton);
         panelONEAST_EAST.add(buttonPanel1);
 
         buttonPanel2 = new JPanel(new FlowLayout());
-        button2 = new JButton("Level Up");
-        button2.setPreferredSize(new Dimension(100, 25));
-        buttonPanel2.add(button2);
+        levelUPStaminaButton = new JButton("Level Up");
+        levelUPStaminaButton.setPreferredSize(new Dimension(100, 25));
+        levelUPStaminaButton.addActionListener(event -> {
+            if (availableLevel > 0) {
+                GameLauncher.characterArray[0].setMaxStamina(GameLauncher.characterArray[0].getMaxStamina() + maxStamina);
+                labelStamina.repaint();
+                availableLevel = availableLevel - 1;
+                availableLevels.setText("Available Levels: " + availableLevel);
+                maxStamina *=1.1;
+            }
+        });
+        buttonPanel2.add(levelUPStaminaButton);
         panelONEAST_EAST.add(buttonPanel2);
 
         buttonPanel3 = new JPanel(new FlowLayout());
-        button3 = new JButton("Level Up");
-        button3.setPreferredSize(new Dimension(100, 25));
-        buttonPanel3.add(button3);
+        LevelUPDamageButton = new JButton("Level Up");
+        LevelUPDamageButton.setPreferredSize(new Dimension(100, 25));
+        LevelUPDamageButton.addActionListener(event -> {
+            if (availableLevel > 0) {
+                GameLauncher.characterArray[0].setDamage(GameLauncher.characterArray[0].getDamage() + damageMultiplier);
+                labelDamage.repaint();
+                availableLevel = availableLevel - 1;
+                availableLevels.setText("Available Levels: " + availableLevel);
+                damageMultiplier *=1.5;
+            }
+        });
+        buttonPanel3.add(LevelUPDamageButton);
         panelONEAST_EAST.add(buttonPanel3);
 
 
@@ -177,7 +208,7 @@ public class Inventory {
         souls.setFont(new Font("Inter", Font.PLAIN, 15));
         panelWEST_CENTER.add(souls);
 
-        availableLevels = new JLabel("Available Levels: ");
+        availableLevels = new JLabel("Available Levels: " + availableLevel);
         availableLevels.setFont(new Font("Inter", Font.PLAIN, 15));
         panelWEST_CENTER.add(availableLevels);
 
@@ -188,14 +219,22 @@ public class Inventory {
 
     public void updater() {
         while (inventoryThread.isAlive()) {
-            souls.setText("Souls: " + GameLauncher.characterArray[0].getSouls());
-            labelHealth.setText("Healthpoints: " + GameLauncher.characterArray[0].getMaxHealth());
+            if (GameLauncher.characterArray[0].getSouls() >= cost) {
+                availableLevel = availableLevel + 1;
+                GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() - cost);
+                cost *=1.5;
+                availableLevels.setText("Available Levels: " + availableLevel);
+
+            }
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("Test");
+            souls.setText("Souls: " + GameLauncher.characterArray[0].getSouls());
+            labelHealth.setText("Healthpoints: " + GameLauncher.characterArray[0].getMaxHealth());
+            labelStamina.setText("Staminapoints: " + GameLauncher.characterArray[0].getMaxStamina());
+            labelDamage.setText("Damage: " + GameLauncher.characterArray[0].getDamage());
         }
     }
 }

@@ -193,7 +193,7 @@ public class GameFrame extends Thread {
             healButton.addActionListener(event -> {
                 if (GameLauncher.characterArray[0].getHealthpotion() == 0) {
                     textAreaFight.append("no heal potion\n");
-                } else if(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth() > GameLauncher.characterArray[0].getMaxHealth()) {
+                } else if (GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth() > GameLauncher.characterArray[0].getMaxHealth()) {
                     textAreaFight.append("You cant over heal\n\n");
                 } else {
                     GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth());
@@ -264,28 +264,28 @@ public class GameFrame extends Thread {
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
             bot.setHealthpoints((int) (bot.getSchaden() * 1.5));
-            textAreaFight.append("Bot life steal attack: " + bot.getSchaden() * 2 + "\n");
+            textAreaFight.append(bot.getName() + " life steal attack: " + bot.getSchaden() * 2 + "\n");
             ifPlayerDead();
 
         } else if (botAttack >= 90) {
             //critical
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
-            textAreaFight.append("Bot crit attack: " + bot.getSchaden() * 2 + "\n");
+            textAreaFight.append(bot.getName() + " crit attack: " + bot.getSchaden() * 2 + "\n");
             ifPlayerDead();
 
         } else if (botAttack >= 50) {
             //missed attack
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getSchaden() * 0.5));
-            textAreaFight.append("Bot missed attack: " + (int) (bot.getSchaden() * 0.5) + "\n");
+            textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getSchaden() * 0.5) + "\n");
             ifPlayerDead();
 
         } else {
             //normal attack
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getSchaden());
-            textAreaFight.append("Bot attack: " + bot.getSchaden() + "\n");
+            textAreaFight.append(bot.getName() + " attack: " + bot.getSchaden() + "\n");
             ifPlayerDead();
 
         }
