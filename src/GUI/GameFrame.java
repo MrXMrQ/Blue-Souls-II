@@ -49,6 +49,7 @@ public class GameFrame extends Thread {
     int counter;
     JTextArea textAreaFight;
     JScrollPane textAreaFightPane;
+    String playerName = GameLauncher.characterArray[0].getName();
 
     public GameFrame() {
         gameDungeonSelection();
@@ -176,11 +177,11 @@ public class GameFrame extends Thread {
                 int playerAttack = (int) (Math.random() * 100) + 1;
                 if (playerAttack >= 90) {
                     bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage() * 2);
-                    textAreaFight.append("Player Crit damage: " + GameLauncher.characterArray[0].getDamage() * 2 + "\n");
+                    textAreaFight.append(playerName + " Crit damage: " + GameLauncher.characterArray[0].getDamage() * 2 + "\n");
 
                 } else {
                     bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage());
-                    textAreaFight.append("Player damage: " + GameLauncher.characterArray[0].getDamage() + "\n");
+                    textAreaFight.append(playerName + " damage: " + GameLauncher.characterArray[0].getDamage() + "\n");
 
                 }
                 ifBotDead();
@@ -188,17 +189,18 @@ public class GameFrame extends Thread {
             });
             panelCENTER.add(attackButton);
 
-            healButton = new JButton("Heal");
+            healButton = new JButton("Heal: " + GameLauncher.characterArray[0].getHealthpotion());
             healButton.setPreferredSize(new Dimension(256, 64));
             healButton.addActionListener(event -> {
                 if (GameLauncher.characterArray[0].getHealthpotion() == 0) {
-                    textAreaFight.append("no heal potion\n");
+                    textAreaFight.append("no heal potion\n\n");
                 } else if (GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth() > GameLauncher.characterArray[0].getMaxHealth()) {
                     textAreaFight.append("You cant over heal\n\n");
                 } else {
                     GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() + GameLauncher.characterArray[0].getHealthpotionDealHealth());
                     GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() - 1);
-                    textAreaFight.append("Player healthpotion: " + GameLauncher.characterArray[0].getHealthpotion() + " healing: " + GameLauncher.characterArray[0].getHealthpotionDealHealth() + "\n");
+                    textAreaFight.append(playerName + " healthpotion: " + GameLauncher.characterArray[0].getHealthpotion() + " healing: " + GameLauncher.characterArray[0].getHealthpotionDealHealth() + "\n");
+                    healButton.setText("Heal: " + GameLauncher.characterArray[0].getHealthpotion());
                     ifBotDead();
                 }
             });
@@ -235,9 +237,9 @@ public class GameFrame extends Thread {
             GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
             int randomGetHeal = (int) (Math.random() * 100) + 1;
 
-            if (randomGetHeal >= 90) {
+            if (randomGetHeal >= 99) {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
-                textAreaFight.append("Heal Drop for player " + GameLauncher.characterArray[0].getHealthpotion() + "\n");
+                textAreaFight.append("Heal Drop for " + playerName + " + GameLauncher.characterArray[0].getHealthpotion()" + "\n");
 
             }
 
@@ -297,6 +299,6 @@ public class GameFrame extends Thread {
             System.exit(1);
         }
 
-        textAreaFight.append("Player Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\n" + bot.getName() + " Health: " + bot.getHealthpoints() + "\n\n");
+        textAreaFight.append(playerName + " Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\n" + bot.getName() + " Health: " + bot.getHealthpoints() + "\n\n");
     }
 }
