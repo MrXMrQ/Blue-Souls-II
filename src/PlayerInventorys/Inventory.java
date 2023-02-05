@@ -1,5 +1,6 @@
 package PlayerInventorys;
 
+import GUI.GameFrame;
 import GUI.LabelWithIcons;
 import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
@@ -231,6 +232,8 @@ public class Inventory {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            GameFrame.progressBarHealth.setMaximum(GameLauncher.characterArray[0].getMaxHealth());
+            GameFrame.progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
             souls.setText("Souls: " + GameLauncher.characterArray[0].getSouls());
             labelHealth.setText("Healthpoints: " + GameLauncher.characterArray[0].getMaxHealth());
             labelStamina.setText("Staminapoints: " + GameLauncher.characterArray[0].getMaxStamina());

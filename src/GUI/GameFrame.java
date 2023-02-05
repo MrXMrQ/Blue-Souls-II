@@ -31,6 +31,7 @@ public class GameFrame extends Thread {
     //Panels
     JPanel panelNORTH;
     JPanel panelCENTER;
+    JPanel panelSOUTH;
     JPanel holder;
 
     //Layouts
@@ -41,6 +42,7 @@ public class GameFrame extends Thread {
     MyFrame gameDungeonWindow;
 
     //Progressbar
+    public static JProgressBar progressBarHealth;
 
     //Other stuff
     Monster bot;
@@ -50,6 +52,7 @@ public class GameFrame extends Thread {
     JTextArea textAreaFight;
     JScrollPane textAreaFightPane;
     String playerName = GameLauncher.characterArray[0].getName();
+    Thread gameFightThread;
 
     public GameFrame() {
         gameDungeonSelection();
@@ -118,9 +121,20 @@ public class GameFrame extends Thread {
         counter = 0;
         gameDungeonWindow.dispose();
 
+        progressBarHealth = new JProgressBar();
+        progressBarHealth.setPreferredSize(new Dimension(600, 25));
+        progressBarHealth.setMaximum(GameLauncher.characterArray[0].getMaxHealth());
+        progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+        progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
+        progressBarHealth.setStringPainted(true);
+        progressBarHealth.setBackground(Color.BLACK);
+        progressBarHealth.setForeground(Color.BLUE);
+        progressBarHealth.setBorderPainted(false);
+
+
         //gameFight();
         gameFightWindow = new MyFrame();
-        Thread gameFightThread = new Thread(this::gameFight);
+        gameFightThread = new Thread(this::gameFight);
         gameFightThread.start();
 
     }
@@ -141,6 +155,7 @@ public class GameFrame extends Thread {
         } else {
 
             gameFightWindow.setLayout(new BorderLayout());
+
 
             panelNORTH = new JPanel();
             panelNORTH.setLayout(flowLayout);
@@ -217,6 +232,12 @@ public class GameFrame extends Thread {
 
             gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
 
+            panelSOUTH = new JPanel(new FlowLayout());
+            panelSOUTH.add(progressBarHealth);
+
+            gameFightWindow.add(panelSOUTH, BorderLayout.SOUTH);
+
+            //playerHealthBar();
         }
     }
 
@@ -267,6 +288,8 @@ public class GameFrame extends Thread {
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
             bot.setHealthpoints((int) (bot.getSchaden() * 1.5));
             textAreaFight.append(bot.getName() + " life steal attack: " + bot.getSchaden() * 2 + "\n");
+            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
             ifPlayerDead();
 
         } else if (botAttack >= 90) {
@@ -274,6 +297,8 @@ public class GameFrame extends Thread {
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
             textAreaFight.append(bot.getName() + " crit attack: " + bot.getSchaden() * 2 + "\n");
+            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
             ifPlayerDead();
 
         } else if (botAttack >= 50) {
@@ -281,6 +306,8 @@ public class GameFrame extends Thread {
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getSchaden() * 0.5));
             textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getSchaden() * 0.5) + "\n");
+            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
             ifPlayerDead();
 
         } else {
@@ -288,6 +315,8 @@ public class GameFrame extends Thread {
 
             GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getSchaden());
             textAreaFight.append(bot.getName() + " attack: " + bot.getSchaden() + "\n");
+            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
             ifPlayerDead();
 
         }
