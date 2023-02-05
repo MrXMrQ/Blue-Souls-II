@@ -260,7 +260,6 @@ public class GameFrame extends Thread {
 
             if (randomGetHeal >= 99) {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
-                textAreaFight.append("Heal Drop for " + playerName + " + GameLauncher.characterArray[0].getHealthpotion()" + "\n");
 
             }
 
