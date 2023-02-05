@@ -3,6 +3,7 @@ package GUI;
 import Dungeons.Dungeons;
 import Figures.Monster;
 import Launcher.GameLauncher;
+import PlayerInventorys.Equip;
 import PlayerInventorys.Inventory;
 
 import javax.swing.*;
@@ -228,6 +229,7 @@ public class GameFrame extends Thread {
 
             equipButton = new JButton("Equipment");
             equipButton.setPreferredSize(new Dimension(256, 64));
+            equipButton.addActionListener(event -> new Equip());
             panelCENTER.add(equipButton);
 
             gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
