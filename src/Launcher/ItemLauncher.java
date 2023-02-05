@@ -1,15 +1,14 @@
 package Launcher;
 
-import Items.ConsumableWeapon;
-import Items.HealItems;
-import Items.Weapon;
+import Items.*;
 
 public class ItemLauncher {
     public static HealItems[] healItemsArray = healItems();
     public static Weapon[] weaponsArray = weapons();
     public static ConsumableWeapon[] consumableWeaponsArray = consumableWeapons();
+    public static Ring[] ringsArray = rings();
 
-    public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray};
+    public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray, ringsArray};
 
 
     public static HealItems[] healItems() {
@@ -28,5 +27,11 @@ public class ItemLauncher {
         ConsumableWeapon throwKnife = new ConsumableWeapon("Throw knife", "consumableWeapon", 10, 2, true, 16);
 
         return new ConsumableWeapon[]{throwKnife};
+    }
+
+    public static Ring[] rings() {
+        Ring ringOfHealing = new Ring("Ring of Heal", "ring", 1.5);
+
+        return new Ring[]{ringOfHealing};
     }
 }
