@@ -214,6 +214,6 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
 
     public void printer(int i) {
         textAreaStats.setText("");
-        textAreaStats.append("Name: " + GameLauncher.characterArray[i].getName() + "\nHealthpoints: " + GameLauncher.characterArray[i].getHealthpoints() + "\nStaminapoints: " + GameLauncher.characterArray[i].getStaminapoints() + "\nDamage: " + GameLauncher.characterArray[i].getDamage() + "\nRingslots: " + GameLauncher.characterArray[i].getRingslots() + "\nHealthpotion: " + GameLauncher.characterArray[i].getRingslots() + "\nFist: " + GameLauncher.characterArray[i].getFist());
+        textAreaStats.append("Name: " + GameLauncher.characterArray[i].getName() + "\nHealthpoints: " + GameLauncher.characterArray[i].getHealthpoints() + "\nStaminapoints: " + GameLauncher.characterArray[i].getStaminapoints() + "\nDamage: " + GameLauncher.characterArray[i].getDamage() + "\nRingslots: " + GameLauncher.characterArray[i].getRingslots() + "\nHealthpotion: " + GameLauncher.characterArray[i].getHealthpotion() + "\nFist: " + GameLauncher.characterArray[i].getFist());
     }
 }
