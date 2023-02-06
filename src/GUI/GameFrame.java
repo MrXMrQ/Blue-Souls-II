@@ -150,10 +150,12 @@ public class GameFrame extends Thread {
 
             textAreaFight = new JTextArea(15, 20);
             textAreaFight.setEditable(false);
-            textAreaFight.setLineWrap(true);
+            textAreaFight.setLineWrap(false);
             textAreaFight.setWrapStyleWord(true);
             textAreaFight.setFont(new Font("Inter", Font.PLAIN, 15));
+
             textAreaFightPane = new JScrollPane(textAreaFight);
+            textAreaFightPane.setAutoscrolls(true);
 
             holder = new JPanel();
             holder.setPreferredSize(new Dimension(260, 256));
@@ -211,7 +213,13 @@ public class GameFrame extends Thread {
 
             inventoryButton = new JButton("Inventory");
             inventoryButton.setPreferredSize(new Dimension(256, 64));
-            inventoryButton.addActionListener(event -> new Inventory());
+            inventoryButton.addActionListener(event -> {
+                if(Inventory.inventoryThread == null || !Inventory.inventoryThread.isAlive()) {
+                    new Inventory();
+                } else {
+                    Inventory.invWindow.toFront();
+                }
+            });
             panelCENTER.add(inventoryButton);
 
             equipButton = new JButton("Equipment");
@@ -226,7 +234,7 @@ public class GameFrame extends Thread {
 
             MainMenuAndChaSubmitFrames.mainWindow.add(panelSOUTH, BorderLayout.SOUTH);
 
-            MainMenuAndChaSubmitFrames.mainWindow.setSize(new Dimension(1920,1080));
+            SwingUtilities.updateComponentTreeUI(MainMenuAndChaSubmitFrames.mainWindow);
         }
     }
 
@@ -251,11 +259,8 @@ public class GameFrame extends Thread {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
 
             }
-
-            MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
-            MainMenuAndChaSubmitFrames.mainWindow.repaint();
-            MainMenuAndChaSubmitFrames.mainWindow.setSize(1921, 1080);
-            MainMenuAndChaSubmitFrames.mainWindow.setSize(1920, 1080);
+            textAreaFight.append("Bot dead");
+            remover();
             randomMonster();
             counter++;
             gameFight();
@@ -322,5 +327,6 @@ public class GameFrame extends Thread {
     public void remover() {
         MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
         MainMenuAndChaSubmitFrames.mainWindow.repaint();
+        SwingUtilities.updateComponentTreeUI(MainMenuAndChaSubmitFrames.mainWindow);
     }
 }
