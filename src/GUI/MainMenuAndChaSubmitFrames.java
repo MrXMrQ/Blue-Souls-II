@@ -9,7 +9,6 @@ import java.util.Objects;
 public class MainMenuAndChaSubmitFrames extends JFrame {
     //windows
     public static MyFrame mainWindow;
-    //MyFrame chaSelectWindow;
 
     //panels
     JPanel panelNORTH;
@@ -218,7 +217,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     public void remover() {
         mainWindow.getContentPane().removeAll();
         mainWindow.repaint();
-        mainWindow.setSize(new Dimension(781, 480));
-        mainWindow.setSize(new Dimension(780, 480));
+        mainWindow.setSize(new Dimension(1921, 1080));
+        mainWindow.setSize(new Dimension(1920, 1080));
     }
 }

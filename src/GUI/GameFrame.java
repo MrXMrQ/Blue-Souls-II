@@ -17,7 +17,6 @@ public class GameFrame extends Thread {
     JButton button1;
     JButton button2;
     JButton button3;
-
     JButton attackButton;
     JButton healButton;
     JButton inventoryButton;
@@ -37,9 +36,6 @@ public class GameFrame extends Thread {
 
     //Layouts
     FlowLayout flowLayout;
-
-    //Windows
-    //MyFrame gameFightWindow;
 
     //Progressbar
     public static JProgressBar progressBarHealth;
@@ -119,7 +115,6 @@ public class GameFrame extends Thread {
         randomMonster();
         layers = (int) ((Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel())) + chooseDungeon.getLowLevel());
         counter = 0;
-        //gameDungeonWindow.dispose();
 
         progressBarHealth = new JProgressBar();
         progressBarHealth.setPreferredSize(new Dimension(600, 25));
@@ -231,7 +226,7 @@ public class GameFrame extends Thread {
 
             MainMenuAndChaSubmitFrames.mainWindow.add(panelSOUTH, BorderLayout.SOUTH);
 
-            MainMenuAndChaSubmitFrames.mainWindow.setSize(new Dimension(781,480));
+            MainMenuAndChaSubmitFrames.mainWindow.setSize(new Dimension(1920,1080));
         }
     }
 
@@ -259,8 +254,8 @@ public class GameFrame extends Thread {
 
             MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
             MainMenuAndChaSubmitFrames.mainWindow.repaint();
-            MainMenuAndChaSubmitFrames.mainWindow.setSize(781, 480);
-            MainMenuAndChaSubmitFrames.mainWindow.setSize(780, 480);
+            MainMenuAndChaSubmitFrames.mainWindow.setSize(1921, 1080);
+            MainMenuAndChaSubmitFrames.mainWindow.setSize(1920, 1080);
             randomMonster();
             counter++;
             gameFight();
