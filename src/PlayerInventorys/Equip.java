@@ -56,9 +56,6 @@ public class Equip {
         panelSOUTH.add(backButton);
 
         equipWindow.add(panelSOUTH, BorderLayout.SOUTH);
-
-        while (equipThread.isAlive()) {
-            System.out.println("PENIS");
-        }
+        
     }
 }
