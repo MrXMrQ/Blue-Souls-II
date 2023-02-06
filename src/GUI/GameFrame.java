@@ -133,7 +133,6 @@ public class GameFrame extends Thread {
         progressBarHealth.setBorderPainted(false);
 
 
-        //gameFight();
         gameFightWindow = new MyFrame();
         gameFightThread = new Thread(this::gameFight);
         gameFightThread.start();
@@ -238,8 +237,6 @@ public class GameFrame extends Thread {
             panelSOUTH.add(progressBarHealth);
 
             gameFightWindow.add(panelSOUTH, BorderLayout.SOUTH);
-
-            //playerHealthBar();
         }
     }
 
