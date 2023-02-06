@@ -39,8 +39,7 @@ public class GameFrame extends Thread {
     FlowLayout flowLayout;
 
     //Windows
-    MyFrame gameFightWindow;
-    MyFrame gameDungeonWindow;
+    //MyFrame gameFightWindow;
 
     //Progressbar
     public static JProgressBar progressBarHealth;
@@ -60,9 +59,6 @@ public class GameFrame extends Thread {
     }
 
     public void gameDungeonSelection() {
-        gameDungeonWindow = new MyFrame();
-        gameDungeonWindow.setLayout(new BorderLayout());
-
         randomDungeons();
 
         flowLayout = new FlowLayout();
@@ -83,7 +79,7 @@ public class GameFrame extends Thread {
         panelNORTH.add(cave2);
         panelNORTH.add(cave3);
 
-        gameDungeonWindow.add(panelNORTH, BorderLayout.NORTH);
+        MainMenuAndChaSubmitFrames.mainWindow.add(panelNORTH, BorderLayout.NORTH);
 
 
         panelCENTER = new JPanel(flowLayout);
@@ -92,6 +88,7 @@ public class GameFrame extends Thread {
         button1.setPreferredSize(new Dimension(256, 64));
         button1.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[0];
+            remover();
             prepareGameFight();
         });
 
@@ -99,6 +96,7 @@ public class GameFrame extends Thread {
         button2.setPreferredSize(new Dimension(256, 64));
         button2.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[1];
+            remover();
             prepareGameFight();
         });
 
@@ -106,6 +104,7 @@ public class GameFrame extends Thread {
         button3.setPreferredSize(new Dimension(256, 64));
         button3.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[2];
+            remover();
             prepareGameFight();
         });
 
@@ -113,14 +112,14 @@ public class GameFrame extends Thread {
         panelCENTER.add(button2);
         panelCENTER.add(button3);
 
-        gameDungeonWindow.add(panelCENTER, BorderLayout.CENTER);
+        MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);
     }
 
     private void prepareGameFight() {
         randomMonster();
         layers = (int) ((Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel())) + chooseDungeon.getLowLevel());
         counter = 0;
-        gameDungeonWindow.dispose();
+        //gameDungeonWindow.dispose();
 
         progressBarHealth = new JProgressBar();
         progressBarHealth.setPreferredSize(new Dimension(600, 25));
@@ -133,8 +132,6 @@ public class GameFrame extends Thread {
         progressBarHealth.setBorderPainted(false);
 
 
-        //gameFight();
-        gameFightWindow = new MyFrame();
         gameFightThread = new Thread(this::gameFight);
         gameFightThread.start();
 
@@ -149,15 +146,10 @@ public class GameFrame extends Thread {
 
     public void gameFight() {
         if (counter == layers) {
-            gameFightWindow.dispose();
             gameDungeonSelection();
             textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
 
         } else {
-
-            gameFightWindow.setLayout(new BorderLayout());
-
-
             panelNORTH = new JPanel();
             panelNORTH.setLayout(flowLayout);
 
@@ -181,7 +173,7 @@ public class GameFrame extends Thread {
             monster.setText(bot.getName());
             panelNORTH.add(monster);
 
-            gameFightWindow.add(panelNORTH, BorderLayout.NORTH);
+            MainMenuAndChaSubmitFrames.mainWindow.add(panelNORTH, BorderLayout.NORTH);
 
 
             panelCENTER.removeAll();
@@ -232,14 +224,14 @@ public class GameFrame extends Thread {
             equipButton.addActionListener(event -> new Equip());
             panelCENTER.add(equipButton);
 
-            gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
+            MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);
 
             panelSOUTH = new JPanel(new FlowLayout());
             panelSOUTH.add(progressBarHealth);
 
-            gameFightWindow.add(panelSOUTH, BorderLayout.SOUTH);
+            MainMenuAndChaSubmitFrames.mainWindow.add(panelSOUTH, BorderLayout.SOUTH);
 
-            //playerHealthBar();
+            MainMenuAndChaSubmitFrames.mainWindow.setSize(new Dimension(781,480));
         }
     }
 
@@ -265,10 +257,10 @@ public class GameFrame extends Thread {
 
             }
 
-            gameFightWindow.getContentPane().removeAll();
-            gameFightWindow.repaint();
-            gameFightWindow.setSize(781, 480);
-            gameFightWindow.setSize(780, 480);
+            MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
+            MainMenuAndChaSubmitFrames.mainWindow.repaint();
+            MainMenuAndChaSubmitFrames.mainWindow.setSize(781, 480);
+            MainMenuAndChaSubmitFrames.mainWindow.setSize(780, 480);
             randomMonster();
             counter++;
             gameFight();
@@ -325,10 +317,15 @@ public class GameFrame extends Thread {
 
     public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
-            gameFightWindow.dispose();
+            MainMenuAndChaSubmitFrames.mainWindow.dispose();
             System.exit(1);
         }
 
         textAreaFight.append(playerName + " Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\n" + bot.getName() + " Health: " + bot.getHealthpoints() + "\n\n");
+    }
+
+    public void remover() {
+        MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
+        MainMenuAndChaSubmitFrames.mainWindow.repaint();
     }
 }

@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class MainMenuAndChaSubmitFrames extends JFrame {
     //windows
-    MyFrame mainMenuWindow;
-    MyFrame chaSelectWindow;
+    public static MyFrame mainWindow;
+    //MyFrame chaSelectWindow;
 
     //panels
     JPanel panelNORTH;
@@ -53,8 +53,8 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     }
 
     public void mainMenuFrame() {
-        mainMenuWindow = new MyFrame();
-        mainMenuWindow.setLayout(new BorderLayout());
+        mainWindow = new MyFrame();
+        mainWindow.setLayout(new BorderLayout());
 
         //NORTH panel for headline and subhead line
         panelNORTH = new JPanel(new BorderLayout());
@@ -67,7 +67,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         subHeadline.setFont(new Font("Inter", Font.BOLD, 20));
         panelNORTH.add(subHeadline, BorderLayout.CENTER);
 
-        mainMenuWindow.add(panelNORTH, BorderLayout.NORTH); //add panelNORTH
+        mainWindow.add(panelNORTH, BorderLayout.NORTH); //add panelNORTH
 
         //CENTER panel for text field and submit button
         panelCENTER = new JPanel(new FlowLayout());
@@ -84,14 +84,14 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
 
             } else {
                 playerName = textFieldUsername.getText();
-                mainMenuWindow.dispose();
+                remover();
 
                 characterSelectionFrame();
             }
         });
         panelCENTER.add(submitButton);
 
-        mainMenuWindow.add(panelCENTER, BorderLayout.CENTER); //add panelCENTER
+        mainWindow.add(panelCENTER, BorderLayout.CENTER); //add panelCENTER
 
         //SOUTH panel for creator Text
         panelSOUTH = new JPanel();
@@ -99,12 +99,10 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
         creatorText = new JLabel("art by pascal, code by mrx in 100% java, supported by Kenneth, Blue Souls II was created on {20.01.2023}, Warning This game is addictive");
         panelSOUTH.add(creatorText);
 
-        mainMenuWindow.add(panelSOUTH, BorderLayout.SOUTH); //add panelSOUTH
+        mainWindow.add(panelSOUTH, BorderLayout.SOUTH); //add panelSOUTH
     }
 
     public void characterSelectionFrame() {
-        chaSelectWindow = new MyFrame();
-        chaSelectWindow.setLayout(new BorderLayout());
 
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setAlignOnBaseline(true);
@@ -149,7 +147,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
 
         panelNORTH.add(holder);
 
-        chaSelectWindow.add(panelNORTH, BorderLayout.NORTH);
+        mainWindow.add(panelNORTH, BorderLayout.NORTH);
 
         //button for the classes and stats of each class + submit button for select your class you want to play with
         panelCENTER.removeAll();
@@ -194,7 +192,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
             if (i > 0) {
                 GameLauncher.characterArray[0] = GameLauncher.characterArray[i];
                 GameLauncher.characterArray[0].setName(playerName);
-                chaSelectWindow.dispose();
+                remover();
                 GameLauncher.gameWindowLauncher();
 
             } else {
@@ -206,7 +204,7 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
 
         panelCENTER.add(submitButton);
 
-        chaSelectWindow.add(panelCENTER, BorderLayout.CENTER); //add the panelSOUTH with all buttons
+        mainWindow.add(panelCENTER, BorderLayout.CENTER); //add the panelSOUTH with all buttons
 
 
 
@@ -215,5 +213,12 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     public void printer(int i) {
         textAreaStats.setText("");
         textAreaStats.append("Name: " + GameLauncher.characterArray[i].getName() + "\nHealthpoints: " + GameLauncher.characterArray[i].getHealthpoints() + "\nStaminapoints: " + GameLauncher.characterArray[i].getStaminapoints() + "\nDamage: " + GameLauncher.characterArray[i].getDamage() + "\nRingslots: " + GameLauncher.characterArray[i].getRingslots() + "\nHealthpotion: " + GameLauncher.characterArray[i].getHealthpotion() + "\nFist: " + GameLauncher.characterArray[i].getFist());
+    }
+
+    public void remover() {
+        mainWindow.getContentPane().removeAll();
+        mainWindow.repaint();
+        mainWindow.setSize(new Dimension(781, 480));
+        mainWindow.setSize(new Dimension(780, 480));
     }
 }
