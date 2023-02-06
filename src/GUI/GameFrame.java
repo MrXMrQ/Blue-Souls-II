@@ -224,7 +224,13 @@ public class GameFrame extends Thread {
 
             equipButton = new JButton("Equipment");
             equipButton.setPreferredSize(new Dimension(256, 64));
-            equipButton.addActionListener(event -> new Equip());
+            equipButton.addActionListener(event -> {
+                if(Equip.equipThread == null || !Equip.equipThread.isAlive()) {
+                    new Equip();
+                } else {
+                    Equip.equipWindow.toFront();
+                }
+            });
             panelCENTER.add(equipButton);
 
             MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);

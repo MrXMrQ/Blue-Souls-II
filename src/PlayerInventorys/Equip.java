@@ -1,7 +1,7 @@
 package PlayerInventorys;
 
-import GUI.LabelWithIcons;
 import GUI.MyFrame;
+import Items.LabelWithItemIcons;
 import Launcher.GameLauncher;
 
 import javax.swing.*;
@@ -9,16 +9,16 @@ import java.awt.*;
 
 public class Equip {
     //Frames
-    MyFrame equipWindow;
+    public static MyFrame equipWindow;
 
     //Panels
-    JPanel panelCENTER;
+    JPanel panelEAST;
     JPanel panelSOUTH;
 
     //Buttons
     JButton backButton;
 
-    Thread equipThread;
+    public static Thread equipThread;
     public Equip() {
         equipThread = new Thread(this::equipFrame);
         equipThread.start();
@@ -28,19 +28,20 @@ public class Equip {
         equipWindow = new MyFrame();
         equipWindow.setLayout(new BorderLayout());
         equipWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        equipWindow.setTitle("Equipment");
 
 
-        LabelWithIcons[] labelWithIconsArray = new LabelWithIcons[GameLauncher.characterArray[0].getRingslots()];
-        panelCENTER = new JPanel(new FlowLayout());
+        LabelWithItemIcons[] labelWithItemIconsArray = new LabelWithItemIcons[GameLauncher.characterArray[0].getRingslots()];
+        panelEAST = new JPanel(new FlowLayout());
 
         for (int i = 0; i < GameLauncher.characterArray[0].getRingslots(); i++) {
-            LabelWithIcons labelWithIcons = new LabelWithIcons();
-            labelWithIconsArray[i] = labelWithIcons;
-            panelCENTER.add(labelWithIconsArray[i]);
+            LabelWithItemIcons labelWithItemIcons = new LabelWithItemIcons();
+            labelWithItemIconsArray[i] = labelWithItemIcons;
+            panelEAST.add(labelWithItemIconsArray[i]);
         }
 
-        labelWithIconsArray[0].setText("Ring");
-        equipWindow.add(panelCENTER, BorderLayout.CENTER);
+        labelWithItemIconsArray[0].setText("Ring");
+        equipWindow.add(panelEAST, BorderLayout.EAST);
 
 
         panelSOUTH = new JPanel(new FlowLayout());
@@ -55,5 +56,9 @@ public class Equip {
         panelSOUTH.add(backButton);
 
         equipWindow.add(panelSOUTH, BorderLayout.SOUTH);
+
+        while (equipThread.isAlive()) {
+            System.out.println("PENIS");
+        }
     }
 }
