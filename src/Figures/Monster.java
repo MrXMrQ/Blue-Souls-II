@@ -1,27 +1,31 @@
 package Figures;
 
+import Items.Weapon;
+
 public class Monster extends Figur {
-    protected int schaden;
+    protected int damage;
     protected String type;
-    protected boolean weapon;
+    protected boolean haveWeapon;
     protected boolean weapondrop;
     protected int souls;
+    protected Weapon weapon;
 
-    public Monster(String name, int healthpoints, int staminapoints, int schaden, String type, boolean weapon, boolean weapondrop, int souls) {
+    public Monster(String name, int healthpoints, int staminapoints, int damage, String type, boolean haveWeapon, boolean weapondrop, int souls, Weapon weapon) {
         super(name, healthpoints, staminapoints);
-        this.schaden = schaden;
+        this.damage = damage;
         this.type = type;
-        this.weapon = weapon;
+        this.haveWeapon = haveWeapon;
         this.weapondrop = weapondrop;
         this.souls = souls;
+        this.weapon = weapon;
     }
 
-    public int getSchaden() {
-        return schaden;
+    public int getDamage() {
+        return damage;
     }
 
-    public void setSchaden(int schaden) {
-        this.schaden = schaden;
+    public void setDamage(int schaden) {
+        this.damage = schaden;
     }
 
     public String getType() {
@@ -32,12 +36,12 @@ public class Monster extends Figur {
         this.type = type;
     }
 
-    public boolean isWeapon() {
-        return weapon;
+    public boolean isHaveWeapon() {
+        return haveWeapon;
     }
 
-    public void setWeapon(boolean weapon) {
-        this.weapon = weapon;
+    public void setHaveWeapon(boolean haveWeapon) {
+        this.haveWeapon = haveWeapon;
     }
 
     public boolean isWeapondrop() {
@@ -54,5 +58,13 @@ public class Monster extends Figur {
 
     public void setSouls(int souls) {
         this.souls = souls;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 }

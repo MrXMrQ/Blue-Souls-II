@@ -9,6 +9,7 @@ public class ItemLauncher {
     public static Ring[] ringsArray = rings();
 
     public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray, ringsArray};
+    public static Object[] playerAllItemsArray = new Object[100];
 
 
     public static HealItems[] healItems() {
@@ -18,7 +19,7 @@ public class ItemLauncher {
     }
 
     public static Weapon[] weapons() {
-        Weapon bastardSword = new Weapon("Bastard sword", "weapon", 50, 30);
+        Weapon bastardSword = new Weapon("Bastard sword", "weapon", 10, 30);
 
         return new Weapon[]{bastardSword};
     }

@@ -2,7 +2,9 @@ package GUI;
 
 import Dungeons.Dungeons;
 import Figures.Monster;
+import Items.Weapon;
 import Launcher.GameLauncher;
+import Launcher.ItemLauncher;
 import PlayerInventorys.Equip;
 import PlayerInventorys.Inventory;
 
@@ -45,6 +47,7 @@ public class GameFrame extends Thread {
     Dungeons chooseDungeon;
     int layers;
     int counter;
+    int index = 0;
     JTextArea textAreaFight;
     JScrollPane textAreaFightPane;
     String playerName = GameLauncher.characterArray[0].getName();
@@ -170,6 +173,10 @@ public class GameFrame extends Thread {
             monster.setText(bot.getName());
             panelNORTH.add(monster);
 
+            if (bot.getWeapon() != null) {
+                monster.setText(bot.getName() + " " + bot.getWeapon().getDamage());
+            }
+
             MainMenuAndChaSubmitFrames.mainWindow.add(panelNORTH, BorderLayout.NORTH);
 
 
@@ -214,7 +221,7 @@ public class GameFrame extends Thread {
             inventoryButton = new JButton("Inventory");
             inventoryButton.setPreferredSize(new Dimension(256, 64));
             inventoryButton.addActionListener(event -> {
-                if(Inventory.inventoryThread == null || !Inventory.inventoryThread.isAlive()) {
+                if (Inventory.inventoryThread == null || !Inventory.inventoryThread.isAlive()) {
                     new Inventory();
                 } else {
                     Inventory.invWindow.toFront();
@@ -225,7 +232,7 @@ public class GameFrame extends Thread {
             equipButton = new JButton("Equipment");
             equipButton.setPreferredSize(new Dimension(256, 64));
             equipButton.addActionListener(event -> {
-                if(Equip.equipThread == null || !Equip.equipThread.isAlive()) {
+                if (Equip.equipThread == null || !Equip.equipThread.isAlive()) {
                     new Equip();
                 } else {
                     Equip.equipWindow.toFront();
@@ -245,26 +252,44 @@ public class GameFrame extends Thread {
     }
 
     public void randomMonster() {
-        List<Monster> list = Arrays.asList(GameLauncher.monsterArray);
-        Collections.shuffle(list);
-        list.toArray(GameLauncher.monsterArray);
+        List<Monster> randomBotList = Arrays.asList(GameLauncher.monsterArray);
+        Collections.shuffle(randomBotList);
+        randomBotList.toArray(GameLauncher.monsterArray);
 
         if (GameLauncher.monsterArray[0].getType().equals(chooseDungeon.getType())) {
-            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getSchaden(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isWeapon(), GameLauncher.monsterArray[0].isWeapondrop(), GameLauncher.monsterArray[0].getSouls());
+            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getDamage(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isHaveWeapon(), GameLauncher.monsterArray[0].isWeapondrop(), GameLauncher.monsterArray[0].getSouls(), GameLauncher.monsterArray[0].getWeapon());
         } else {
             randomMonster();
+        }
+
+        if (bot.isHaveWeapon()) {
+            int weaponForBot = (int) (Math.random() * 100) + 1;
+
+            if (weaponForBot >= 70) {
+                List<Weapon> randomWeaponList = Arrays.asList(ItemLauncher.weaponsArray);
+                Collections.shuffle(randomWeaponList);
+                randomWeaponList.toArray(ItemLauncher.weaponsArray);
+                bot.setWeapon(ItemLauncher.weaponsArray[0]);
+            }
         }
     }
 
     public void ifBotDead() {
         if (bot.getHealthpoints() <= 0) {
-            GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
-            int randomGetHeal = (int) (Math.random() * 100) + 1;
+            int randomForHealAndWeapon = (int) (Math.random() * 100) + 1;
 
-            if (randomGetHeal >= 99) {
+            if (randomForHealAndWeapon >= 99) {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
 
             }
+            System.out.println("test");
+            if (bot.getWeapon() != null && randomForHealAndWeapon >= 0) {
+                System.out.println("test2");
+                ItemLauncher.playerAllItemsArray[index] = bot.getWeapon();
+                index += 1;
+            }
+
+            GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
             textAreaFight.append("Bot dead");
             remover();
             randomMonster();
@@ -280,45 +305,72 @@ public class GameFrame extends Thread {
     public void botTurn() {
         int botAttack = (int) (Math.random() * 100) + 1;
 
+        if (bot.getWeapon() != null) {
+            if (botAttack >= 97) {
+                //lifeSteal
 
-        if (botAttack >= 97) {
-            //lifeSteal
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - ((bot.getDamage() * 2) + (bot.getWeapon().getDamage() * 2)));
+                bot.setHealthpoints((int) ((bot.getDamage() * 1.5) + bot.getWeapon().getDamage() * 1.5));
+                textAreaFight.append(bot.getName() + " life steal attack: " + bot.getDamage() * 2 + " bonus damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
 
-            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
-            bot.setHealthpoints((int) (bot.getSchaden() * 1.5));
-            textAreaFight.append(bot.getName() + " life steal attack: " + bot.getSchaden() * 2 + "\n");
-            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
-            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
-            ifPlayerDead();
 
-        } else if (botAttack >= 90) {
-            //critical
+            } else if (botAttack >= 90) {
+                //critical
 
-            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getSchaden() * 2));
-            textAreaFight.append(bot.getName() + " crit attack: " + bot.getSchaden() * 2 + "\n");
-            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
-            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
-            ifPlayerDead();
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - ((bot.getDamage() * 2) + (bot.getWeapon().getDamage() * 2)));
+                textAreaFight.append(bot.getName() + " crit attack: " + bot.getDamage() * 2 + " bonus damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
 
-        } else if (botAttack >= 50) {
-            //missed attack
 
-            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getSchaden() * 0.5));
-            textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getSchaden() * 0.5) + "\n");
-            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
-            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
-            ifPlayerDead();
+            } else if (botAttack >= 50) {
+                //missed attack
 
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) ((bot.getDamage() * 0.5) + (bot.getWeapon().getDamage() * 0.5)));
+                textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getDamage() * 0.5) + " bonus damage: " + (int) (ItemLauncher.weaponsArray[0].getDamage() * 0.5) + "\n");
+
+
+            } else {
+                //normal attack
+
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getDamage() + bot.getWeapon().getDamage()));
+                textAreaFight.append(bot.getName() + " attack: " + bot.getDamage() + " bonus damage: " + ItemLauncher.weaponsArray[0].getDamage() + "\n");
+
+
+            }
         } else {
-            //normal attack
+            if (botAttack >= 97) {
+                //lifeSteal
 
-            GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getSchaden());
-            textAreaFight.append(bot.getName() + " attack: " + bot.getSchaden() + "\n");
-            progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
-            progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
-            ifPlayerDead();
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getDamage() * 2));
+                bot.setHealthpoints((int) (bot.getDamage() * 1.5));
+                textAreaFight.append(bot.getName() + " life steal attack: " + bot.getDamage() * 2 + "\n");
 
+            } else if (botAttack >= 90) {
+                //critical
+
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getDamage() * 2));
+                textAreaFight.append(bot.getName() + " crit attack: " + bot.getDamage() * 2 + "\n");
+
+
+            } else if (botAttack >= 50) {
+                //missed attack
+
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) (bot.getDamage() * 0.5));
+                textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getDamage() * 0.5) + "\n");
+
+
+            } else {
+                //normal attack
+
+                GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - bot.getDamage());
+                textAreaFight.append(bot.getName() + " attack: " + bot.getDamage() + "\n");
+
+
+            }
         }
+        progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+        progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
+        ifPlayerDead();
+
     }
 
     public void ifPlayerDead() {

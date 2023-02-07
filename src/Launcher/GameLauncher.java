@@ -23,22 +23,23 @@ public class GameLauncher {
     public static Character[] characters() {
         Character player = new Character("PLAYER", 999, 999, 999, 999, 999, 999, 0, 0, "PLAYER", 999, 989);
 
-        Character knight = new Character("Knight", 1000, 100, 20, 4, 5, 250, 0, 0, "Knight",1000,100);
-        Character warrior = new Character("Warrior", 1000, 100, 30, 2, 6, 250, 0, 0, "Warrior",1000,100);
-        Character wizard = new Character("Wizard", 1000, 100, 10, 6, 0, 250, 0, 0, "Wizard",1000,100);
-        Character confessor = new Character("Confessor", 1000, 100, 40, 1, 1, 250, 0, 0, "Confessor",1000,100);
+        Character knight = new Character("Knight", 1000, 100, 20, 4, 5, 250, 0, 0, "Knight", 1000, 100);
+        Character warrior = new Character("Warrior", 1000, 100, 30, 2, 6, 250, 0, 0, "Warrior", 1000, 100);
+        Character wizard = new Character("Wizard", 1000, 100, 10, 6, 0, 250, 0, 0, "Wizard", 1000, 100);
+        Character confessor = new Character("Confessor", 1000, 100, 40, 1, 1, 250, 0, 0, "Confessor", 1000, 100);
 
         return new Character[]{player, knight, warrior, wizard, confessor};
     }
 
     public static Monster[] monsters() {
-        Monster golem = new Monster("Golem", 50, 50, 50, "cave", false, false, 10);
-        Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", false, false, 10);
-        Monster gargoyle = new Monster("Gargoyle", 50, 50, 50, "cave", false, false, 10);
+        Monster golem = new Monster("Golem", 50, 50, 50, "cave", false, false, 10, null);
+        Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", false, false, 10, null);
+        Monster gargoyle = new Monster("Gargoyle", 50, 50, 50, "cave", true, false, 10, null);
+        Monster skeleton = new Monster("Skeleton", 50, 50, 50, "cave", true, false, 10, null);
 
-        Monster raptor = new Monster("Raptor", 50, 50, 50, "jungle", false, false, 10);
+        Monster raptor = new Monster("Raptor", 50, 50, 50, "jungle", false, false, 10, null);
 
-        return new Monster[]{golem, caveSpider, gargoyle, raptor};
+        return new Monster[]{golem, caveSpider, gargoyle, skeleton, raptor};
     }
 
     public static Dungeons[] dungeons() {
