@@ -7,3 +7,4 @@ Inventory
 over Heal wird das restliche Hp voll gemacht
 Gegner können mit random Fist spawnen
 Player kann waffen ausrüsten
+old  days
