@@ -15,7 +15,7 @@ import static javax.swing.SwingConstants.*;
 
 public class Inventory {
     //Frames
-    MyFrame invWindow;
+    public static MyFrame invWindow;
 
     //Panels
     JPanel panelSOUTH;
@@ -51,7 +51,7 @@ public class Inventory {
     //Other
     LabelWithIcons playerIcon;
     int actuallyLevel = 0;
-    Thread inventoryThread;
+    public static Thread inventoryThread;
     int cost = 10;
     int maxHealth = 200;
     int maxStamina = 20;

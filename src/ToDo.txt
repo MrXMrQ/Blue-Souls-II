@@ -1,3 +1,9 @@
-alles in einem window
-events
-Inventory = alle items speichern und ausrüsten können
+Text Area bug
+Inventory
+    Gegner droppen random items
+    Gedropte items werden im Player Inv gespeichert
+    Spieler kann wählen welche Items er ausrüssten möchte oder löschen will
+
+over Heal wird das restliche Hp voll gemacht
+Gegner können mit random Fist spawnen
+Player kann waffen ausrüsten
