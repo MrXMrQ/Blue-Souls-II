@@ -17,6 +17,7 @@ public class GameFrame extends Thread {
     JButton button1;
     JButton button2;
     JButton button3;
+
     JButton attackButton;
     JButton healButton;
     JButton inventoryButton;
@@ -37,6 +38,10 @@ public class GameFrame extends Thread {
     //Layouts
     FlowLayout flowLayout;
 
+    //Windows
+    MyFrame gameFightWindow;
+    MyFrame gameDungeonWindow;
+
     //Progressbar
     public static JProgressBar progressBarHealth;
 
@@ -55,6 +60,9 @@ public class GameFrame extends Thread {
     }
 
     public void gameDungeonSelection() {
+        gameDungeonWindow = new MyFrame();
+        gameDungeonWindow.setLayout(new BorderLayout());
+
         randomDungeons();
 
         flowLayout = new FlowLayout();
@@ -75,7 +83,7 @@ public class GameFrame extends Thread {
         panelNORTH.add(cave2);
         panelNORTH.add(cave3);
 
-        MainMenuAndChaSubmitFrames.mainWindow.add(panelNORTH, BorderLayout.NORTH);
+        gameDungeonWindow.add(panelNORTH, BorderLayout.NORTH);
 
 
         panelCENTER = new JPanel(flowLayout);
@@ -84,7 +92,6 @@ public class GameFrame extends Thread {
         button1.setPreferredSize(new Dimension(256, 64));
         button1.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[0];
-            remover();
             prepareGameFight();
         });
 
@@ -92,7 +99,6 @@ public class GameFrame extends Thread {
         button2.setPreferredSize(new Dimension(256, 64));
         button2.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[1];
-            remover();
             prepareGameFight();
         });
 
@@ -100,7 +106,6 @@ public class GameFrame extends Thread {
         button3.setPreferredSize(new Dimension(256, 64));
         button3.addActionListener(event -> {
             chooseDungeon = GameLauncher.dungeonsArray[2];
-            remover();
             prepareGameFight();
         });
 
@@ -108,13 +113,14 @@ public class GameFrame extends Thread {
         panelCENTER.add(button2);
         panelCENTER.add(button3);
 
-        MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);
+        gameDungeonWindow.add(panelCENTER, BorderLayout.CENTER);
     }
 
     private void prepareGameFight() {
         randomMonster();
         layers = (int) ((Math.random() * (chooseDungeon.getHighLevel() - chooseDungeon.getLowLevel())) + chooseDungeon.getLowLevel());
         counter = 0;
+        gameDungeonWindow.dispose();
 
         progressBarHealth = new JProgressBar();
         progressBarHealth.setPreferredSize(new Dimension(600, 25));
@@ -127,6 +133,7 @@ public class GameFrame extends Thread {
         progressBarHealth.setBorderPainted(false);
 
 
+        gameFightWindow = new MyFrame();
         gameFightThread = new Thread(this::gameFight);
         gameFightThread.start();
 
@@ -141,21 +148,24 @@ public class GameFrame extends Thread {
 
     public void gameFight() {
         if (counter == layers) {
+            gameFightWindow.dispose();
             gameDungeonSelection();
             textAreaFight.append("Dungeon: " + chooseDungeon.getName() + " Counter: " + counter + " Layers: " + layers + "\n");
 
         } else {
+
+            gameFightWindow.setLayout(new BorderLayout());
+
+
             panelNORTH = new JPanel();
             panelNORTH.setLayout(flowLayout);
 
             textAreaFight = new JTextArea(15, 20);
             textAreaFight.setEditable(false);
-            textAreaFight.setLineWrap(false);
+            textAreaFight.setLineWrap(true);
             textAreaFight.setWrapStyleWord(true);
             textAreaFight.setFont(new Font("Inter", Font.PLAIN, 15));
-
             textAreaFightPane = new JScrollPane(textAreaFight);
-            textAreaFightPane.setAutoscrolls(true);
 
             holder = new JPanel();
             holder.setPreferredSize(new Dimension(260, 256));
@@ -170,7 +180,7 @@ public class GameFrame extends Thread {
             monster.setText(bot.getName());
             panelNORTH.add(monster);
 
-            MainMenuAndChaSubmitFrames.mainWindow.add(panelNORTH, BorderLayout.NORTH);
+            gameFightWindow.add(panelNORTH, BorderLayout.NORTH);
 
 
             panelCENTER.removeAll();
@@ -213,34 +223,20 @@ public class GameFrame extends Thread {
 
             inventoryButton = new JButton("Inventory");
             inventoryButton.setPreferredSize(new Dimension(256, 64));
-            inventoryButton.addActionListener(event -> {
-                if(Inventory.inventoryThread == null || !Inventory.inventoryThread.isAlive()) {
-                    new Inventory();
-                } else {
-                    Inventory.invWindow.toFront();
-                }
-            });
+            inventoryButton.addActionListener(event -> new Inventory());
             panelCENTER.add(inventoryButton);
 
             equipButton = new JButton("Equipment");
             equipButton.setPreferredSize(new Dimension(256, 64));
-            equipButton.addActionListener(event -> {
-                if(Equip.equipThread == null || !Equip.equipThread.isAlive()) {
-                    new Equip();
-                } else {
-                    Equip.equipWindow.toFront();
-                }
-            });
+            equipButton.addActionListener(event -> new Equip());
             panelCENTER.add(equipButton);
 
-            MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);
+            gameFightWindow.add(panelCENTER, BorderLayout.CENTER);
 
             panelSOUTH = new JPanel(new FlowLayout());
             panelSOUTH.add(progressBarHealth);
 
-            MainMenuAndChaSubmitFrames.mainWindow.add(panelSOUTH, BorderLayout.SOUTH);
-
-            SwingUtilities.updateComponentTreeUI(MainMenuAndChaSubmitFrames.mainWindow);
+            gameFightWindow.add(panelSOUTH, BorderLayout.SOUTH);
         }
     }
 
@@ -265,8 +261,11 @@ public class GameFrame extends Thread {
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
 
             }
-            textAreaFight.append("Bot dead");
-            remover();
+
+            gameFightWindow.getContentPane().removeAll();
+            gameFightWindow.repaint();
+            gameFightWindow.setSize(781, 480);
+            gameFightWindow.setSize(780, 480);
             randomMonster();
             counter++;
             gameFight();
@@ -323,16 +322,10 @@ public class GameFrame extends Thread {
 
     public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
-            MainMenuAndChaSubmitFrames.mainWindow.dispose();
+            gameFightWindow.dispose();
             System.exit(1);
         }
 
         textAreaFight.append(playerName + " Health: " + GameLauncher.characterArray[0].getHealthpoints() + "\n" + bot.getName() + " Health: " + bot.getHealthpoints() + "\n\n");
-    }
-
-    public void remover() {
-        MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
-        MainMenuAndChaSubmitFrames.mainWindow.repaint();
-        SwingUtilities.updateComponentTreeUI(MainMenuAndChaSubmitFrames.mainWindow);
     }
 }
