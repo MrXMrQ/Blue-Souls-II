@@ -34,10 +34,10 @@ public class MainMenuAndChaSubmitFrames extends JFrame {
     JButton confessorButton;
 
     //icons
-    public static Icon confessor;
+    public static Icon knight;
     public static Icon warrior;
     public static Icon wizard;
-    public static Icon knight;
+    public static Icon confessor;
 
     //other components or variables
     JTextField textFieldUsername;
