@@ -288,7 +288,6 @@ public class GameFrame extends Thread {
 
             if (bot.getWeapon() != null && randomForWeapon >= 0) { //100%
                 ItemLauncher.allPlayerItems.add(bot.getWeapon());
-                System.out.println("Waffe: " + ItemLauncher.allPlayerItems.get(index).toString());
                 index += 1;
 
             }

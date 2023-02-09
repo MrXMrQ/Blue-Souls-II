@@ -1,9 +1,7 @@
-Text Area bug
-Inventory
-    Gegner droppen random items
-    Gedropte items werden im Player Inv gespeichert
-    Spieler kann wählen welche Items er ausrüssten möchte oder löschen will
+Equip Windo labels printen soviel wie spieler items hat
+    die 3 Button funktion implementieren
+        Remove
+        upgrade
+        Equip
 
-over Heal wird das restliche Hp voll gemacht
-Gegner können mit random Fist spawnen
-Player kann waffen ausrüsten
+alle Items die der Spieler bekommen kann werden geadet
