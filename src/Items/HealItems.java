@@ -15,13 +15,4 @@ public class HealItems extends Item{
     public void setDealHeal(int dealHeal) {
         this.dealHeal = dealHeal;
     }
-
-    @Override
-    public String toString() {
-        return "HealItems{" +
-                "dealHeal=" + dealHeal +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
 }

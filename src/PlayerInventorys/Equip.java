@@ -3,13 +3,16 @@ package PlayerInventorys;
 import GUI.LabelWithIcons;
 import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
+import Items.Item;
 import Items.LabelWithItemIcons;
 import Launcher.GameLauncher;
-import Launcher.ItemLauncher;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Equip {
@@ -42,14 +45,19 @@ public class Equip {
 
     //Other
     public static Thread equipThread;
+    public static Thread mouseThread;
     int length = 0;
     int index = 0;
+    public static ArrayList<Item> allPlayerItems = new ArrayList<>();
     ArrayList<LabelWithItemIcons> itemLabelList;
+    boolean isPressed = false;
+    int temp;
 
 
     public Equip() {
         equipThread = new Thread(this::equipFrame);
         equipThread.start();
+        mouseThread = new Thread();
     }
 
     public void equipFrame() {
@@ -165,12 +173,32 @@ public class Equip {
 
     public void update() {
         while (equipThread.isAlive()) {
-            if (ItemLauncher.allPlayerItems.size() != length) {
+            if (allPlayerItems.size() != length) {
                 itemLabel = new LabelWithItemIcons();
+                itemLabel.setText(allPlayerItems.get(index).getName());
                 itemLabelList.add(itemLabel);
+                itemLabelList.get(index).addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        System.out.println(e);
+                        onMouse(e);
+                    }
+                });
+
                 panelCENTER_CENTER.add(itemLabelList.get(index));
                 SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
+                index++;
                 length++;
+            }
+        }
+    }
+
+    public void onMouse(MouseEvent e) {
+        for (int i = 0; i < itemLabelList.size(); i++) {
+            if (e.getSource() == itemLabelList.get(i) && !isPressed) {
+                itemLabelList.get(i).setBackground(Color.YELLOW);
+                isPressed = true;
+                temp = i;
             }
         }
     }

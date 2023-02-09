@@ -1,6 +1,6 @@
 package Items;
 
-public abstract class Item {
+public class Item {
     protected String name;
     protected String type;
 
@@ -23,13 +23,5 @@ public abstract class Item {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                '}';
     }
 }

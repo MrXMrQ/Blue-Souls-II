@@ -10,8 +10,8 @@ public class ItemLauncher {
     public static ConsumableWeapon[] consumableWeaponsArray = consumableWeapons();
     public static Ring[] ringsArray = rings();
 
-    public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray, ringsArray};
-    public static ArrayList<Object> allPlayerItems = new ArrayList<Object>();
+    //public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray, ringsArray};
+    public static int index = 0;
 
 
     public static HealItems[] healItems() {

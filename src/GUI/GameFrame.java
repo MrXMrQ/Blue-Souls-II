@@ -47,7 +47,6 @@ public class GameFrame extends Thread {
     Dungeons chooseDungeon;
     int layers;
     int counter;
-    int index = 0;
     JTextArea textAreaFight;
     JScrollPane textAreaFightPane;
     String playerName = GameLauncher.characterArray[0].getName();
@@ -286,25 +285,27 @@ public class GameFrame extends Thread {
             }
 
             if (bot.getWeapon() != null && randomForWeapon >= 0) { //100%
-                ItemLauncher.allPlayerItems.add(bot.getWeapon());
-                index += 1;
+                Equip.allPlayerItems.add(bot.getWeapon());
 
             }
 
             if (bot.isItemDrop() && randomForItem >= 0) { //100%
-                List<Object> randomItem = Arrays.asList(ItemLauncher.allItems);
-                Collections.shuffle(randomItem);
-                randomItem.toArray(ItemLauncher.allItems);
+                if (randomForItem >= 75) {
+                    int random = (int)(Math.random() * ItemLauncher.weaponsArray.length);
+                    Equip.allPlayerItems.add(ItemLauncher.weaponsArray[random]);
 
-                Object[] temp = new Object[]{ItemLauncher.allItems[0]};
+                } else if (randomForItem >= 50) {
+                    int random = (int)(Math.random() * ItemLauncher.ringsArray.length);
+                    Equip.allPlayerItems.add(ItemLauncher.ringsArray[random]);
 
-                List<Object> randomItem_Item = Arrays.asList(temp);
-                Collections.shuffle(randomItem_Item);
-                randomItem_Item.toArray(temp);
+                } else if (randomForItem >= 25) {
+                    int random = (int)(Math.random() * ItemLauncher.healItemsArray.length);
+                    Equip.allPlayerItems.add(ItemLauncher.healItemsArray[random]);
 
-                ItemLauncher.allPlayerItems.add(temp[0]);
-                index += 1;
-
+                } else {
+                    int random = (int)(Math.random() * ItemLauncher.consumableWeaponsArray.length);
+                    Equip.allPlayerItems.add(ItemLauncher.consumableWeaponsArray[random]);
+                }
             }
 
             GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());

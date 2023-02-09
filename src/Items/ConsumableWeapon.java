@@ -25,16 +25,4 @@ public class ConsumableWeapon extends Weapon {
     public void setMaxStack(int maxStack) {
         this.maxStack = maxStack;
     }
-
-    @Override
-    public String toString() {
-        return "ConsumableWeapon{" +
-                "stackable=" + stackable +
-                ", maxStack=" + maxStack +
-                ", damage=" + damage +
-                ", durability=" + durability +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
 }
