@@ -5,10 +5,12 @@ import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
 import Items.LabelWithItemIcons;
 import Launcher.GameLauncher;
+import Launcher.ItemLauncher;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Equip {
     //Frames
@@ -21,6 +23,7 @@ public class Equip {
     JPanel panelEAST;
     JPanel panelCENTER;
     JPanel panelCENTER_WEST;
+    JPanel panelCENTER_CENTER;
     JPanel panelSOUTH;
 
     //Buttons
@@ -35,8 +38,14 @@ public class Equip {
     JLabel headlineButtons;
     JLabel headlineRings;
     JLabel headlineForInventory;
+    LabelWithItemIcons itemLabel;
 
+    //Other
     public static Thread equipThread;
+    int length = 0;
+    int index = 0;
+    ArrayList<LabelWithItemIcons> itemLabelList;
+
 
     public Equip() {
         equipThread = new Thread(this::equipFrame);
@@ -53,7 +62,7 @@ public class Equip {
         panelNORTH = new JPanel();
 
         headlineForInventory = new JLabel("EQUIP INVENTORY", SwingConstants.CENTER);
-        headlineForInventory.setFont(new Font("Inter" , Font.BOLD, 45));
+        headlineForInventory.setFont(new Font("Inter", Font.BOLD, 45));
         panelNORTH.add(headlineForInventory);
 
         equipWindow.add(panelNORTH, BorderLayout.NORTH);
@@ -73,11 +82,11 @@ public class Equip {
 
         panelWEAST.add(playerIcon, BorderLayout.NORTH);
 
-        panelWEAST_WEST = new JPanel(new GridLayout(4,1));
+        panelWEAST_WEST = new JPanel(new GridLayout(4, 1));
         panelWEAST_WEST.setBorder(new LineBorder(Color.BLACK));
 
         headlineButtons = new JLabel("EQUIP INVENTORY");
-        headlineButtons.setFont(new Font("Inter" , Font.BOLD, 28));
+        headlineButtons.setFont(new Font("Inter", Font.BOLD, 28));
         panelWEAST_WEST.add(headlineButtons);
 
         JPanel buttonPanel1 = new JPanel(new FlowLayout());
@@ -99,13 +108,13 @@ public class Equip {
         equipWindow.add(panelWEAST, BorderLayout.WEST);
 
         //East side
-        panelEAST = new JPanel(new GridLayout(GameLauncher.characterArray[0].getRingslots()+1, 1));
+        panelEAST = new JPanel(new GridLayout(GameLauncher.characterArray[0].getRingslots() + 1, 1));
         panelEAST.setBorder(new LineBorder(Color.BLACK));
 
         LabelWithItemIcons[] labelWithItemIconsArray = new LabelWithItemIcons[GameLauncher.characterArray[0].getRingslots()];
 
         headlineRings = new JLabel("RINGS", SwingConstants.CENTER);
-        headlineRings.setFont(new Font("Inter" , Font.BOLD, 38));
+        headlineRings.setFont(new Font("Inter", Font.BOLD, 38));
         panelEAST.add(headlineRings);
 
         for (int i = 0; i < GameLauncher.characterArray[0].getRingslots(); i++) {
@@ -129,6 +138,11 @@ public class Equip {
         weaponIcon.setText("Weapon");
         panelCENTER_WEST.add(weaponIcon);
 
+        panelCENTER_CENTER = new JPanel(new FlowLayout());
+
+        itemLabelList = new ArrayList<>();
+
+        panelCENTER.add(panelCENTER_CENTER, BorderLayout.CENTER);
         panelCENTER.add(panelCENTER_WEST, BorderLayout.WEST);
         equipWindow.add(panelCENTER);
 
@@ -145,5 +159,19 @@ public class Equip {
         panelSOUTH.add(backButton);
 
         equipWindow.add(panelSOUTH, BorderLayout.SOUTH);
+
+        update();
+    }
+
+    public void update() {
+        while (equipThread.isAlive()) {
+            if (ItemLauncher.allPlayerItems.size() != length) {
+                itemLabel = new LabelWithItemIcons();
+                itemLabelList.add(itemLabel);
+                panelCENTER_CENTER.add(itemLabelList.get(index));
+                SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
+                length++;
+            }
+        }
     }
 }
