@@ -24,4 +24,14 @@ public class Weapon extends Item {
     public void setDurability(int durability) {
         this.durability = durability;
     }
+
+    @Override
+    public String toString() {
+        return "Weapon{" +
+                "damage=" + damage +
+                ", durability=" + durability +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

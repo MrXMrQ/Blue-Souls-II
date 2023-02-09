@@ -32,12 +32,12 @@ public class GameLauncher {
     }
 
     public static Monster[] monsters() {
-        Monster golem = new Monster("Golem", 50, 50, 50, "cave", false, false, 10, null);
-        Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", false, false, 10, null);
-        Monster gargoyle = new Monster("Gargoyle", 50, 50, 50, "cave", true, false, 10, null);
-        Monster skeleton = new Monster("Skeleton", 50, 50, 50, "cave", true, false, 10, null);
+        Monster golem = new Monster("Golem", 50, 50, 50, "cave", true, 10, null);
+        Monster caveSpider = new Monster("Cave Spider", 50, 50, 50, "cave", true, 10, null);
+        Monster gargoyle = new Monster("Gargoyle", 50, 50, 50, "cave", true, 10, null);
+        Monster skeleton = new Monster("Skeleton", 50, 50, 50, "cave", true, 10, null);
 
-        Monster raptor = new Monster("Raptor", 50, 50, 50, "jungle", false, false, 10, null);
+        Monster raptor = new Monster("Raptor", 50, 50, 50, "jungle", true, 10, null);
 
         return new Monster[]{golem, caveSpider, gargoyle, skeleton, raptor};
     }

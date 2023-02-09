@@ -2,6 +2,8 @@ package Launcher;
 
 import Items.*;
 
+import java.util.ArrayList;
+
 public class ItemLauncher {
     public static HealItems[] healItemsArray = healItems();
     public static Weapon[] weaponsArray = weapons();
@@ -9,7 +11,7 @@ public class ItemLauncher {
     public static Ring[] ringsArray = rings();
 
     public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray, ringsArray};
-    public static Object[] playerAllItemsArray = new Object[100];
+    public static ArrayList<Object> allPlayerItems = new ArrayList<Object>();
 
 
     public static HealItems[] healItems() {

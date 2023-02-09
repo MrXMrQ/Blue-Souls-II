@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class GameFrame extends Thread {
     //Buttons
@@ -257,12 +258,12 @@ public class GameFrame extends Thread {
         randomBotList.toArray(GameLauncher.monsterArray);
 
         if (GameLauncher.monsterArray[0].getType().equals(chooseDungeon.getType())) {
-            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getDamage(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isHaveWeapon(), GameLauncher.monsterArray[0].isWeapondrop(), GameLauncher.monsterArray[0].getSouls(), GameLauncher.monsterArray[0].getWeapon());
+            bot = new Monster(GameLauncher.monsterArray[0].getName(), GameLauncher.monsterArray[0].getHealthpoints(), GameLauncher.monsterArray[0].getStaminapoints(), GameLauncher.monsterArray[0].getDamage(), GameLauncher.monsterArray[0].getType(), GameLauncher.monsterArray[0].isItemDrop(), GameLauncher.monsterArray[0].getSouls(), GameLauncher.monsterArray[0].getWeapon());
         } else {
             randomMonster();
         }
 
-        if (bot.isHaveWeapon()) {
+        if (bot.isItemDrop()) {
             int weaponForBot = (int) (Math.random() * 100) + 1;
 
             if (weaponForBot >= 70) {
@@ -276,17 +277,36 @@ public class GameFrame extends Thread {
 
     public void ifBotDead() {
         if (bot.getHealthpoints() <= 0) {
-            int randomForHealAndWeapon = (int) (Math.random() * 100) + 1;
+            int randomForHeal = (int) (Math.random() * 100) + 1;
+            int randomForWeapon = (int) (Math.random() * 100) + 1;
+            int randomForItem = (int) (Math.random() * 100) + 1;
 
-            if (randomForHealAndWeapon >= 99) {
+            if (randomForHeal >= 99) {  //1%
                 GameLauncher.characterArray[0].setHealthpotion(GameLauncher.characterArray[0].getHealthpotion() + 2);
 
             }
-            System.out.println("test");
-            if (bot.getWeapon() != null && randomForHealAndWeapon >= 0) {
-                System.out.println("test2");
-                ItemLauncher.playerAllItemsArray[index] = bot.getWeapon();
+
+            if (bot.getWeapon() != null && randomForWeapon >= 0) { //100%
+                ItemLauncher.allPlayerItems.add(bot.getWeapon());
+                System.out.println("Waffe: " + ItemLauncher.allPlayerItems.get(index).toString());
                 index += 1;
+
+            }
+
+            if (bot.isItemDrop() && randomForItem >= 0) { //100%
+                List<Object> randomItem = Arrays.asList(ItemLauncher.allItems);
+                Collections.shuffle(randomItem);
+                randomItem.toArray(ItemLauncher.allItems);
+
+                Object[] temp = new Object[]{ItemLauncher.allItems[0]};
+
+                List<Object> randomItem_Item = Arrays.asList(temp);
+                Collections.shuffle(randomItem_Item);
+                randomItem_Item.toArray(temp);
+
+                ItemLauncher.allPlayerItems.add(temp[0]);
+                index += 1;
+
             }
 
             GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());

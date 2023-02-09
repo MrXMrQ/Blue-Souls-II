@@ -5,17 +5,15 @@ import Items.Weapon;
 public class Monster extends Figur {
     protected int damage;
     protected String type;
-    protected boolean haveWeapon;
-    protected boolean weapondrop;
+    protected boolean itemDrop;
     protected int souls;
     protected Weapon weapon;
 
-    public Monster(String name, int healthpoints, int staminapoints, int damage, String type, boolean haveWeapon, boolean weapondrop, int souls, Weapon weapon) {
+    public Monster(String name, int healthpoints, int staminapoints, int damage, String type, boolean itemDrop, int souls, Weapon weapon) {
         super(name, healthpoints, staminapoints);
         this.damage = damage;
         this.type = type;
-        this.haveWeapon = haveWeapon;
-        this.weapondrop = weapondrop;
+        this.itemDrop = itemDrop;
         this.souls = souls;
         this.weapon = weapon;
     }
@@ -36,20 +34,12 @@ public class Monster extends Figur {
         this.type = type;
     }
 
-    public boolean isHaveWeapon() {
-        return haveWeapon;
+    public boolean isItemDrop() {
+        return itemDrop;
     }
 
-    public void setHaveWeapon(boolean haveWeapon) {
-        this.haveWeapon = haveWeapon;
-    }
-
-    public boolean isWeapondrop() {
-        return weapondrop;
-    }
-
-    public void setWeapondrop(boolean weapondrop) {
-        this.weapondrop = weapondrop;
+    public void setItemDrop(boolean itemDrop) {
+        this.itemDrop = itemDrop;
     }
 
     public int getSouls() {

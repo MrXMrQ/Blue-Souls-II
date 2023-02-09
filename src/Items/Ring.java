@@ -15,4 +15,13 @@ public class Ring extends Item {
     public void setMultiplier(double multiplier) {
         this.multiplier = multiplier;
     }
+
+    @Override
+    public String toString() {
+        return "Ring{" +
+                "multiplier=" + multiplier +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
