@@ -20,6 +20,7 @@ public class Equip {
     JPanel panelWEAST_WEST;
     JPanel panelEAST;
     JPanel panelCENTER;
+    JPanel panelCENTER_WEST;
     JPanel panelSOUTH;
 
     //Buttons
@@ -30,6 +31,7 @@ public class Equip {
 
     //Labels
     LabelWithIcons playerIcon;
+    LabelWithItemIcons weaponIcon;
     JLabel headlineButtons;
     JLabel headlineRings;
     JLabel headlineForInventory;
@@ -75,7 +77,7 @@ public class Equip {
         panelWEAST_WEST.setBorder(new LineBorder(Color.BLACK));
 
         headlineButtons = new JLabel("EQUIP INVENTORY");
-        headlineButtons.setFont(new Font("Inter" , Font.BOLD, 27));
+        headlineButtons.setFont(new Font("Inter" , Font.BOLD, 28));
         panelWEAST_WEST.add(headlineButtons);
 
         JPanel buttonPanel1 = new JPanel(new FlowLayout());
@@ -117,7 +119,18 @@ public class Equip {
         equipWindow.add(panelEAST, BorderLayout.EAST);
 
         //Center side
-        panelCENTER = new JPanel(new FlowLayout());
+        panelCENTER = new JPanel(new BorderLayout());
+        panelCENTER.setBorder(new LineBorder(Color.BLACK));
+
+        panelCENTER_WEST = new JPanel(new FlowLayout());
+        panelCENTER_WEST.setBorder(new LineBorder(Color.GRAY));
+
+        weaponIcon = new LabelWithItemIcons();
+        weaponIcon.setText("Weapon");
+        panelCENTER_WEST.add(weaponIcon);
+
+        panelCENTER.add(panelCENTER_WEST, BorderLayout.WEST);
+        equipWindow.add(panelCENTER);
 
         //South side
         panelSOUTH = new JPanel(new FlowLayout());
