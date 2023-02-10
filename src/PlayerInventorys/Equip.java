@@ -12,7 +12,6 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Equip {
@@ -46,11 +45,10 @@ public class Equip {
     //Other
     public static Thread equipThread;
     public static Thread mouseThread;
-    int length = 0;
+    int itemCounter = 0;
     int index = 0;
     public static ArrayList<Item> allPlayerItems = new ArrayList<>();
-    ArrayList<LabelWithItemIcons> itemLabelList;
-    boolean isPressed = false;
+    ArrayList<LabelWithItemIcons> LabelListe;
     int temp;
 
 
@@ -99,6 +97,14 @@ public class Equip {
 
         JPanel buttonPanel1 = new JPanel(new FlowLayout());
         removeButton = new JButton("Remove");
+        removeButton.addActionListener(event -> {
+            itemCounter--;
+            allPlayerItems.remove(temp);
+            panelCENTER_CENTER.remove(LabelListe.get(temp));
+            LabelListe.remove(temp);
+            SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
+            index--;
+        });
         buttonPanel1.add(removeButton);
         panelWEAST_WEST.add(buttonPanel1);
 
@@ -148,7 +154,7 @@ public class Equip {
 
         panelCENTER_CENTER = new JPanel(new FlowLayout());
 
-        itemLabelList = new ArrayList<>();
+        LabelListe = new ArrayList<>();
 
         panelCENTER.add(panelCENTER_CENTER, BorderLayout.CENTER);
         panelCENTER.add(panelCENTER_WEST, BorderLayout.WEST);
@@ -173,32 +179,37 @@ public class Equip {
 
     public void update() {
         while (equipThread.isAlive()) {
-            if (allPlayerItems.size() != length) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (allPlayerItems.size() != itemCounter) {
                 itemLabel = new LabelWithItemIcons();
                 itemLabel.setText(allPlayerItems.get(index).getName());
-                itemLabelList.add(itemLabel);
-                itemLabelList.get(index).addMouseListener(new MouseAdapter() {
+                LabelListe.add(itemLabel);
+
+                itemLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println(e);
-                        onMouse(e);
+                        for (int i = 0; i < LabelListe.size(); i++) {
+                            LabelListe.get(i).setBackground(Color.GRAY);
+                        }
+
+                        for (int i = 0; i < LabelListe.size(); i++) {
+                            if(e.getSource() == LabelListe.get(i)) {
+                                LabelListe.get(i).setBackground(Color.YELLOW);
+                                temp = i;
+                            }
+                        }
                     }
                 });
 
-                panelCENTER_CENTER.add(itemLabelList.get(index));
+                panelCENTER_CENTER.add(LabelListe.get(index));
                 SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
-                index++;
-                length++;
-            }
-        }
-    }
 
-    public void onMouse(MouseEvent e) {
-        for (int i = 0; i < itemLabelList.size(); i++) {
-            if (e.getSource() == itemLabelList.get(i) && !isPressed) {
-                itemLabelList.get(i).setBackground(Color.YELLOW);
-                isPressed = true;
-                temp = i;
+                itemCounter++;
+                index++;
             }
         }
     }
