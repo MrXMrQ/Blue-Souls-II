@@ -4,11 +4,11 @@ import GUI.GameFrame;
 import GUI.LabelWithIcons;
 import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
+import Items.HealItems;
 import Items.Item;
 import Items.LabelWithItemIcons;
 import Items.Weapon;
 import Launcher.GameLauncher;
-import Launcher.ItemLauncher;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -35,7 +35,7 @@ public class Equip {
     JButton backButton;
     JButton removeButton;
     JButton equipButton;
-    JButton upgradeInventoryButton;
+    JButton useButton;
 
     //Labels
     LabelWithIcons playerIcon;
@@ -118,7 +118,7 @@ public class Equip {
                     isWeaponEquipped = true;
                     weaponLabel.setText(allPlayerItems.get(currentElement).getName());
                     SwingUtilities.updateComponentTreeUI(weaponLabel);
-                    tempWeapon = new Weapon((allPlayerItems.get(currentElement)).getName(), (allPlayerItems.get(currentElement)).getType(), ((Weapon)(allPlayerItems.get(currentElement))).getDamage(), ((Weapon)(allPlayerItems.get(currentElement))).getDurability());
+                    tempWeapon = new Weapon((allPlayerItems.get(currentElement)).getName(), (allPlayerItems.get(currentElement)).getType(), ((Weapon) (allPlayerItems.get(currentElement))).getDamage(), ((Weapon) (allPlayerItems.get(currentElement))).getDurability());
                     GameLauncher.characterArray[0].setFist(tempWeapon.getDamage());
 
                     listManager();
@@ -129,8 +129,24 @@ public class Equip {
         panelWEAST_WEST.add(buttonPanel2);
 
         JPanel buttonPanel3 = new JPanel(new FlowLayout());
-        upgradeInventoryButton = new JButton("Upgrade");
-        buttonPanel3.add(upgradeInventoryButton);
+        useButton = new JButton("Upgrade");
+        useButton.addActionListener(event -> {
+            if (labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
+                if (allPlayerItems.get(currentElement).getType().equals("use")) {
+                    int healItem = ((HealItems) (allPlayerItems.get(currentElement))).getDealHeal();
+                    GameLauncher.characterArray[0].setHealthpoints((GameLauncher.characterArray[0].getHealthpoints() + healItem));
+
+                    GameFrame.progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
+                    GameFrame.progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
+                    GameFrame.progressBarHealth.setStringPainted(true);
+
+                } else if (allPlayerItems.get(currentElement).getType().equals("damageUse")) {
+
+                }
+                listManager();
+            }
+        });
+        buttonPanel3.add(useButton);
         panelWEAST_WEST.add(buttonPanel3);
 
         panelWEAST.add(panelWEAST_WEST, BorderLayout.WEST);

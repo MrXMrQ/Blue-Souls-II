@@ -10,7 +10,7 @@ public class ItemLauncher {
 
 
     public static HealItems[] healItems() {
-        HealItems stoneOfLife = new HealItems("Stone of life", "heal", 20);
+        HealItems stoneOfLife = new HealItems("Stone of life", "use", 20);
 
         return new HealItems[]{stoneOfLife};
     }
@@ -22,7 +22,7 @@ public class ItemLauncher {
     }
 
     public static ConsumableWeapon[] consumableWeapons() {
-        ConsumableWeapon throwKnife = new ConsumableWeapon("Throw knife", "consumableWeapon", 10, 2, true, 16);
+        ConsumableWeapon throwKnife = new ConsumableWeapon("Throw knife", "damageUse", 10, 2, true, 16);
 
         return new ConsumableWeapon[]{throwKnife};
     }
