@@ -2,16 +2,11 @@ package Launcher;
 
 import Items.*;
 
-import java.util.ArrayList;
-
 public class ItemLauncher {
     public static HealItems[] healItemsArray = healItems();
     public static Weapon[] weaponsArray = weapons();
     public static ConsumableWeapon[] consumableWeaponsArray = consumableWeapons();
     public static Ring[] ringsArray = rings();
-
-    //public static Object[] allItems = {healItemsArray, weaponsArray, consumableWeaponsArray, ringsArray};
-    public static int index = 0;
 
 
     public static HealItems[] healItems() {
@@ -21,7 +16,7 @@ public class ItemLauncher {
     }
 
     public static Weapon[] weapons() {
-        Weapon bastardSword = new Weapon("Bastard sword", "weapon", 10, 30);
+        Weapon bastardSword = new Weapon("Bastard sword", "weapon", 10, 10);
 
         return new Weapon[]{bastardSword};
     }

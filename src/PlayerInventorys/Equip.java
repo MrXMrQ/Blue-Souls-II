@@ -8,6 +8,7 @@ import Items.Item;
 import Items.LabelWithItemIcons;
 import Items.Weapon;
 import Launcher.GameLauncher;
+import Launcher.ItemLauncher;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -38,7 +39,7 @@ public class Equip {
 
     //Labels
     LabelWithIcons playerIcon;
-    LabelWithItemIcons weaponLabel;
+    public static LabelWithItemIcons weaponLabel;
     JLabel headlineButtons;
     JLabel headlineRings;
     JLabel headlineForInventory;
@@ -52,7 +53,8 @@ public class Equip {
     public static ArrayList<Item> allPlayerItems = new ArrayList<>();
     ArrayList<LabelWithItemIcons> labelListe;
     int currentElement;
-    boolean isWeaponEquipped;
+    public static boolean isWeaponEquipped;
+    public static Weapon tempWeapon;
 
 
     public Equip() {
@@ -101,7 +103,7 @@ public class Equip {
         JPanel buttonPanel1 = new JPanel(new FlowLayout());
         removeButton = new JButton("Remove");
         removeButton.addActionListener(event -> {
-            if(labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
+            if (labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
                 listManager();
             }
         });
@@ -112,13 +114,13 @@ public class Equip {
         equipButton = new JButton("Equip");
         equipButton.addActionListener(event -> {
             if (labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
-                if(allPlayerItems.get(currentElement).getType().equals("weapon") && !isWeaponEquipped) {
+                if (allPlayerItems.get(currentElement).getType().equals("weapon") && !isWeaponEquipped) {
                     isWeaponEquipped = true;
-                    GameFrame.forEquipWindowWeaponName = allPlayerItems.get(currentElement).getName();
-                    weaponLabel.setText(GameFrame.forEquipWindowWeaponName);
+                    weaponLabel.setText(allPlayerItems.get(currentElement).getName());
                     SwingUtilities.updateComponentTreeUI(weaponLabel);
-                    Weapon tempWeapon = (Weapon)(allPlayerItems.get(currentElement));
-                    GameLauncher.characterArray[0].setDamage(GameLauncher.characterArray[0].getDamage() + tempWeapon.getDamage());
+                    tempWeapon = new Weapon((allPlayerItems.get(currentElement)).getName(), (allPlayerItems.get(currentElement)).getType(), ((Weapon)(allPlayerItems.get(currentElement))).getDamage(), ((Weapon)(allPlayerItems.get(currentElement))).getDurability());
+                    GameLauncher.characterArray[0].setFist(tempWeapon.getDamage());
+
                     listManager();
                 }
             }
@@ -205,7 +207,7 @@ public class Equip {
                         }
 
                         for (int i = 0; i < labelListe.size(); i++) {
-                            if(e.getSource() == labelListe.get(i)) {
+                            if (e.getSource() == labelListe.get(i)) {
                                 labelListe.get(i).setBackground(Color.YELLOW);
                                 currentElement = i;
                             }

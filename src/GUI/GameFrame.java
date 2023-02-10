@@ -51,7 +51,7 @@ public class GameFrame extends Thread {
     JScrollPane textAreaFightPane;
     String playerName = GameLauncher.characterArray[0].getName();
     Thread gameFightThread;
-    public static String forEquipWindowWeaponName;
+    int temp;
 
     public GameFrame() {
         gameDungeonSelection();
@@ -188,13 +188,23 @@ public class GameFrame extends Thread {
             attackButton.addActionListener(e -> {
                 int playerAttack = (int) (Math.random() * 100) + 1;
                 if (playerAttack >= 90) {
-                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage() * 2);
-                    textAreaFight.append(playerName + " Crit damage: " + GameLauncher.characterArray[0].getDamage() * 2 + "\n");
+                    bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() * 2 + GameLauncher.characterArray[0].getFist()));
+                    textAreaFight.append(playerName + " Crit damage: " + (GameLauncher.characterArray[0].getDamage() * 2 + GameLauncher.characterArray[0].getFist()) + "\n");
 
                 } else {
-                    bot.setHealthpoints(bot.getHealthpoints() - GameLauncher.characterArray[0].getDamage());
-                    textAreaFight.append(playerName + " damage: " + GameLauncher.characterArray[0].getDamage() + "\n");
+                    bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() + GameLauncher.characterArray[0].getFist()));
+                    textAreaFight.append(playerName + " damage: " + (GameLauncher.characterArray[0].getDamage() + GameLauncher.characterArray[0].getFist()) + "\n");
 
+                }
+                if(Equip.tempWeapon != null) {
+                    temp = Equip.tempWeapon.getDurability();
+                    Equip.tempWeapon.setDurability(Equip.tempWeapon.getDurability() - 1);
+                    if(Equip.tempWeapon.getDurability() <= 0) {
+                        Equip.tempWeapon = null;
+                        Equip.isWeaponEquipped = false;
+                        Equip.weaponLabel.setText("");
+                        GameLauncher.characterArray[0].setFist(0);
+                    }
                 }
                 ifBotDead();
 
@@ -332,28 +342,28 @@ public class GameFrame extends Thread {
 
                 GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - ((bot.getDamage() * 2) + (bot.getWeapon().getDamage() * 2)));
                 bot.setHealthpoints((int) ((bot.getDamage() * 1.5) + bot.getWeapon().getDamage() * 1.5));
-                textAreaFight.append(bot.getName() + " life steal attack: " + bot.getDamage() * 2 + " bonus damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
+                textAreaFight.append(bot.getName() + " life steal attack: " + bot.getDamage() * 2 + "\n" + "Weapon damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
 
 
             } else if (botAttack >= 90) {
                 //critical
 
                 GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - ((bot.getDamage() * 2) + (bot.getWeapon().getDamage() * 2)));
-                textAreaFight.append(bot.getName() + " crit attack: " + bot.getDamage() * 2 + " bonus damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
+                textAreaFight.append(bot.getName() + " crit attack: " + bot.getDamage() * 2 + "\n" + "Weapon damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
 
 
             } else if (botAttack >= 50) {
                 //missed attack
 
                 GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (int) ((bot.getDamage() * 0.5) + (bot.getWeapon().getDamage() * 0.5)));
-                textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getDamage() * 0.5) + " bonus damage: " + (int) (ItemLauncher.weaponsArray[0].getDamage() * 0.5) + "\n");
+                textAreaFight.append(bot.getName() + " missed attack: " + (int) (bot.getDamage() * 0.5) + "\n" + "Weapon damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
 
 
             } else {
                 //normal attack
 
                 GameLauncher.characterArray[0].setHealthpoints(GameLauncher.characterArray[0].getHealthpoints() - (bot.getDamage() + bot.getWeapon().getDamage()));
-                textAreaFight.append(bot.getName() + " attack: " + bot.getDamage() + " bonus damage: " + ItemLauncher.weaponsArray[0].getDamage() + "\n");
+                textAreaFight.append(bot.getName() + " attack: " + bot.getDamage() + "\n" + "Weapon damage: " + ItemLauncher.weaponsArray[0].getDamage() * 2 + "\n");
 
 
             }
@@ -388,6 +398,8 @@ public class GameFrame extends Thread {
 
             }
         }
+
+
         progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
         progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
         ifPlayerDead();
