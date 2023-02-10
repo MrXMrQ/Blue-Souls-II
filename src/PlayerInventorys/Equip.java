@@ -4,7 +4,7 @@ import GUI.GameFrame;
 import GUI.LabelWithIcons;
 import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
-import Items.HealItems;
+import Items.UseItems;
 import Items.Item;
 import Items.LabelWithItemIcons;
 import Items.Weapon;
@@ -129,19 +129,23 @@ public class Equip {
         panelWEAST_WEST.add(buttonPanel2);
 
         JPanel buttonPanel3 = new JPanel(new FlowLayout());
-        useButton = new JButton("Upgrade");
+        useButton = new JButton("Use");
         useButton.addActionListener(event -> {
             if (labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
-                if (allPlayerItems.get(currentElement).getType().equals("use")) {
-                    int healItem = ((HealItems) (allPlayerItems.get(currentElement))).getDealHeal();
+                if (allPlayerItems.get(currentElement).getType().equals("HealUse")) {
+                    int healItem = ((UseItems) (allPlayerItems.get(currentElement))).getDealHeal();
                     GameLauncher.characterArray[0].setHealthpoints((GameLauncher.characterArray[0].getHealthpoints() + healItem));
 
                     GameFrame.progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
                     GameFrame.progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
                     GameFrame.progressBarHealth.setStringPainted(true);
 
-                } else if (allPlayerItems.get(currentElement).getType().equals("damageUse")) {
+                } else if (allPlayerItems.get(currentElement).getType().equals("DamageUse")) {
+                    int damageItem = ((UseItems) (allPlayerItems.get(currentElement))).getDamage();
+                    GameFrame.bot.setHealthpoints(GameFrame.bot.getHealthpoints() - damageItem);
 
+                    GameFrame.textAreaFight.append(allPlayerItems.get(currentElement).getName() + "  deal damage: " + damageItem + "\n");
+                    GameFrame.textAreaFight.append(GameFrame.bot.getName() + " healthpoints: " + GameFrame.bot.getHealthpoints() + "\n\n");
                 }
                 listManager();
             }

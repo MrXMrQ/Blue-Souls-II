@@ -43,11 +43,11 @@ public class GameFrame extends Thread {
     public static JProgressBar progressBarHealth;
 
     //Other stuff
-    Monster bot;
+    public static Monster bot;
     Dungeons chooseDungeon;
     int layers;
     int counter;
-    JTextArea textAreaFight;
+    public static JTextArea textAreaFight;
     JScrollPane textAreaFightPane;
     String playerName = GameLauncher.characterArray[0].getName();
     Thread gameFightThread;
@@ -310,13 +310,10 @@ public class GameFrame extends Thread {
                     int random = (int)(Math.random() * ItemLauncher.ringsArray.length);
                     Equip.allPlayerItems.add(ItemLauncher.ringsArray[random]);
 
-                } else if (randomForItem >= 25) {
-                    int random = (int)(Math.random() * ItemLauncher.healItemsArray.length);
-                    Equip.allPlayerItems.add(ItemLauncher.healItemsArray[random]);
-
                 } else {
-                    int random = (int)(Math.random() * ItemLauncher.consumableWeaponsArray.length);
-                    Equip.allPlayerItems.add(ItemLauncher.consumableWeaponsArray[random]);
+                    int random = (int)(Math.random() * ItemLauncher.useItemsArray.length);
+                    Equip.allPlayerItems.add(ItemLauncher.useItemsArray[random]);
+
                 }
             }
 
