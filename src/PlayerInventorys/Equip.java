@@ -1,10 +1,12 @@
 package PlayerInventorys;
 
+import GUI.GameFrame;
 import GUI.LabelWithIcons;
 import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
 import Items.Item;
 import Items.LabelWithItemIcons;
+import Items.Weapon;
 import Launcher.GameLauncher;
 
 import javax.swing.*;
@@ -36,7 +38,7 @@ public class Equip {
 
     //Labels
     LabelWithIcons playerIcon;
-    LabelWithItemIcons weaponIcon;
+    LabelWithItemIcons weaponLabel;
     JLabel headlineButtons;
     JLabel headlineRings;
     JLabel headlineForInventory;
@@ -48,8 +50,9 @@ public class Equip {
     int itemCounter = 0;
     int index = 0;
     public static ArrayList<Item> allPlayerItems = new ArrayList<>();
-    ArrayList<LabelWithItemIcons> LabelListe;
-    int temp;
+    ArrayList<LabelWithItemIcons> labelListe;
+    int currentElement;
+    boolean isWeaponEquipped;
 
 
     public Equip() {
@@ -98,18 +101,28 @@ public class Equip {
         JPanel buttonPanel1 = new JPanel(new FlowLayout());
         removeButton = new JButton("Remove");
         removeButton.addActionListener(event -> {
-            itemCounter--;
-            allPlayerItems.remove(temp);
-            panelCENTER_CENTER.remove(LabelListe.get(temp));
-            LabelListe.remove(temp);
-            SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
-            index--;
+            if(labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
+                listManager();
+            }
         });
         buttonPanel1.add(removeButton);
         panelWEAST_WEST.add(buttonPanel1);
 
         JPanel buttonPanel2 = new JPanel(new FlowLayout());
         equipButton = new JButton("Equip");
+        equipButton.addActionListener(event -> {
+            if (labelListe.size() > 0 && labelListe.get(currentElement).getBackground() == Color.YELLOW) {
+                if(allPlayerItems.get(currentElement).getType().equals("weapon") && !isWeaponEquipped) {
+                    isWeaponEquipped = true;
+                    GameFrame.forEquipWindowWeaponName = allPlayerItems.get(currentElement).getName();
+                    weaponLabel.setText(GameFrame.forEquipWindowWeaponName);
+                    SwingUtilities.updateComponentTreeUI(weaponLabel);
+                    Weapon tempWeapon = (Weapon)(allPlayerItems.get(currentElement));
+                    GameLauncher.characterArray[0].setDamage(GameLauncher.characterArray[0].getDamage() + tempWeapon.getDamage());
+                    listManager();
+                }
+            }
+        });
         buttonPanel2.add(equipButton);
         panelWEAST_WEST.add(buttonPanel2);
 
@@ -148,13 +161,12 @@ public class Equip {
         panelCENTER_WEST = new JPanel(new FlowLayout());
         panelCENTER_WEST.setBorder(new LineBorder(Color.GRAY));
 
-        weaponIcon = new LabelWithItemIcons();
-        weaponIcon.setText("Weapon");
-        panelCENTER_WEST.add(weaponIcon);
+        weaponLabel = new LabelWithItemIcons();
+        panelCENTER_WEST.add(weaponLabel);
 
         panelCENTER_CENTER = new JPanel(new FlowLayout());
 
-        LabelListe = new ArrayList<>();
+        labelListe = new ArrayList<>();
 
         panelCENTER.add(panelCENTER_CENTER, BorderLayout.CENTER);
         panelCENTER.add(panelCENTER_WEST, BorderLayout.WEST);
@@ -165,11 +177,7 @@ public class Equip {
 
         backButton = new JButton("CLOSE");
         backButton.setPreferredSize(new Dimension(200, 50));
-        backButton.addActionListener(event -> {
-            equipWindow.dispose();
-            //noinspection deprecation
-            equipThread.stop();
-        });
+        backButton.addActionListener(event -> equipWindow.setVisible(false));
         panelSOUTH.add(backButton);
 
         equipWindow.add(panelSOUTH, BorderLayout.SOUTH);
@@ -187,30 +195,39 @@ public class Equip {
             if (allPlayerItems.size() != itemCounter) {
                 itemLabel = new LabelWithItemIcons();
                 itemLabel.setText(allPlayerItems.get(index).getName());
-                LabelListe.add(itemLabel);
+                labelListe.add(itemLabel);
 
                 itemLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        for (int i = 0; i < LabelListe.size(); i++) {
-                            LabelListe.get(i).setBackground(Color.GRAY);
+                        for (int i = 0; i < labelListe.size(); i++) {
+                            labelListe.get(i).setBackground(Color.GRAY);
                         }
 
-                        for (int i = 0; i < LabelListe.size(); i++) {
-                            if(e.getSource() == LabelListe.get(i)) {
-                                LabelListe.get(i).setBackground(Color.YELLOW);
-                                temp = i;
+                        for (int i = 0; i < labelListe.size(); i++) {
+                            if(e.getSource() == labelListe.get(i)) {
+                                labelListe.get(i).setBackground(Color.YELLOW);
+                                currentElement = i;
                             }
                         }
                     }
                 });
 
-                panelCENTER_CENTER.add(LabelListe.get(index));
+                panelCENTER_CENTER.add(labelListe.get(index));
                 SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
 
                 itemCounter++;
                 index++;
             }
         }
+    }
+
+    public void listManager() {
+        itemCounter--;
+        allPlayerItems.remove(currentElement);
+        panelCENTER_CENTER.remove(labelListe.get(currentElement));
+        labelListe.remove(currentElement);
+        SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
+        index--;
     }
 }

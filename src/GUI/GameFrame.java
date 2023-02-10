@@ -51,6 +51,7 @@ public class GameFrame extends Thread {
     JScrollPane textAreaFightPane;
     String playerName = GameLauncher.characterArray[0].getName();
     Thread gameFightThread;
+    public static String forEquipWindowWeaponName;
 
     public GameFrame() {
         gameDungeonSelection();
@@ -234,6 +235,7 @@ public class GameFrame extends Thread {
                 if (Equip.equipThread == null || !Equip.equipThread.isAlive()) {
                     new Equip();
                 } else {
+                    Equip.equipWindow.setVisible(true);
                     Equip.equipWindow.toFront();
                 }
             });
