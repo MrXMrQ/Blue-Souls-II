@@ -139,6 +139,8 @@ public class Equip {
                     GameFrame.progressBarHealth.setValue(GameLauncher.characterArray[0].getHealthpoints());
                     GameFrame.progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
                     GameFrame.progressBarHealth.setStringPainted(true);
+                    listManager();
+
 
                 } else if (allPlayerItems.get(currentElement).getType().equals("DamageUse")) {
                     int damageItem = ((UseItems) (allPlayerItems.get(currentElement))).getDamage();
@@ -146,8 +148,8 @@ public class Equip {
 
                     GameFrame.textAreaFight.append(allPlayerItems.get(currentElement).getName() + "  deal damage: " + damageItem + "\n");
                     GameFrame.textAreaFight.append(GameFrame.bot.getName() + " healthpoints: " + GameFrame.bot.getHealthpoints() + "\n\n");
+                    listManager();
                 }
-                listManager();
             }
         });
         buttonPanel3.add(useButton);
