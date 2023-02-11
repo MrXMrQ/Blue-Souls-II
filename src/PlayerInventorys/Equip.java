@@ -4,17 +4,13 @@ import GUI.GameFrame;
 import GUI.LabelWithIcons;
 import GUI.MainMenuAndChaSubmitFrames;
 import GUI.MyFrame;
-import Items.UseItems;
-import Items.Item;
-import Items.LabelWithItemIcons;
-import Items.Weapon;
+import Items.*;
 import Launcher.GameLauncher;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Equip {
@@ -44,6 +40,7 @@ public class Equip {
     JLabel headlineRings;
     JLabel headlineForInventory;
     LabelWithItemIcons itemLabel;
+    LabelWithItemIcons[] labelWithItemIconsArray;
 
     //Other
     public static Thread equipThread;
@@ -53,6 +50,7 @@ public class Equip {
     public static ArrayList<Item> allPlayerItems = new ArrayList<>();
     ArrayList<LabelWithItemIcons> labelListe;
     int currentElement;
+    int currentRing;
     public static boolean isWeaponEquipped;
     public static Weapon tempWeapon;
 
@@ -68,6 +66,41 @@ public class Equip {
         equipWindow.setLayout(new BorderLayout());
         equipWindow.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         equipWindow.setTitle("Equipment");
+
+        //East side
+        panelEAST = new JPanel(new GridLayout(GameLauncher.characterArray[0].getRingslots() + 1, 1));
+        panelEAST.setBorder(new LineBorder(Color.BLACK));
+
+        labelWithItemIconsArray = new LabelWithItemIcons[GameLauncher.characterArray[0].getRingslots()];
+
+        headlineRings = new JLabel("RINGS", SwingConstants.CENTER);
+        headlineRings.setFont(new Font("Inter", Font.BOLD, 38));
+        panelEAST.add(headlineRings);
+
+        for (int i = 0; i < GameLauncher.characterArray[0].getRingslots(); i++) {
+            LabelWithItemIcons labelWithItemIcons = new LabelWithItemIcons();
+            JPanel panel = new JPanel(new FlowLayout());
+            labelWithItemIconsArray[i] = labelWithItemIcons;
+            labelWithItemIcons.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    for (LabelWithItemIcons withItemIcons : labelWithItemIconsArray)
+                        withItemIcons.setBackground(Color.GRAY);
+
+                    for (int j = 0; j < labelWithItemIconsArray.length; j++) {
+                        if (e.getSource() == labelWithItemIconsArray[j]) {
+                            labelWithItemIconsArray[j].setBackground(Color.RED);
+                            currentRing = j;
+                        }
+                    }
+                }
+            });
+
+            panel.add(labelWithItemIconsArray[i]);
+            panelEAST.add(panel);
+        }
+
+        equipWindow.add(panelEAST, BorderLayout.EAST);
 
         //North side
         panelNORTH = new JPanel();
@@ -122,6 +155,19 @@ public class Equip {
                     GameLauncher.characterArray[0].setFist(tempWeapon.getDamage());
 
                     listManager();
+                } else if (allPlayerItems.get(currentElement).getType().equals("ring") && labelWithItemIconsArray[currentRing].getBackground() == Color.RED && ringChecker()) {
+                    labelWithItemIconsArray[currentRing].setText(allPlayerItems.get(currentElement).getName());
+                    switch (((Ring) (allPlayerItems.get(currentElement))).getKind()) {
+                        case "heal" -> System.out.println("Heal");
+                        case "damage" -> System.out.println("Damage");
+                        case "souls" -> System.out.println("souls");
+                        case "critDamage" -> System.out.println("critDamage");
+                        case "lifeSteal" -> System.out.println("lifeSteal");
+                        case "resistant" -> System.out.println("resistant");
+                        default -> System.out.println("Default");
+                    }
+
+                    listManager();
                 }
             }
         });
@@ -157,26 +203,6 @@ public class Equip {
 
         panelWEAST.add(panelWEAST_WEST, BorderLayout.WEST);
         equipWindow.add(panelWEAST, BorderLayout.WEST);
-
-        //East side
-        panelEAST = new JPanel(new GridLayout(GameLauncher.characterArray[0].getRingslots() + 1, 1));
-        panelEAST.setBorder(new LineBorder(Color.BLACK));
-
-        LabelWithItemIcons[] labelWithItemIconsArray = new LabelWithItemIcons[GameLauncher.characterArray[0].getRingslots()];
-
-        headlineRings = new JLabel("RINGS", SwingConstants.CENTER);
-        headlineRings.setFont(new Font("Inter", Font.BOLD, 38));
-        panelEAST.add(headlineRings);
-
-        for (int i = 0; i < GameLauncher.characterArray[0].getRingslots(); i++) {
-            LabelWithItemIcons labelWithItemIcons = new LabelWithItemIcons();
-            JPanel panel = new JPanel(new FlowLayout());
-            labelWithItemIconsArray[i] = labelWithItemIcons;
-            panel.add(labelWithItemIconsArray[i]);
-            panelEAST.add(panel);
-        }
-
-        equipWindow.add(panelEAST, BorderLayout.EAST);
 
         //Center side
         panelCENTER = new JPanel(new BorderLayout());
@@ -254,4 +280,15 @@ public class Equip {
         SwingUtilities.updateComponentTreeUI(panelCENTER_CENTER);
         index--;
     }
+
+    public boolean ringChecker() {
+        for (LabelWithItemIcons labelWithItemIcons : labelWithItemIconsArray) {
+            if (labelWithItemIcons.getText().equals(allPlayerItems.get(currentElement).getName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 }
