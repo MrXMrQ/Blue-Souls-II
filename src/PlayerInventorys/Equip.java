@@ -289,6 +289,4 @@ public class Equip {
         }
         return true;
     }
-
-
 }
