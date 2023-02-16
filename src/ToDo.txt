@@ -1,7 +1,1 @@
-Equip Windo labels printen soviel wie spieler items hat
-    die 3 Button funktion implementieren
-        Remove
-        upgrade
-        Equip
-
-alle Items die der Spieler bekommen kann werden geadet
+Ringe geben effecte wenn ausgerüstet
