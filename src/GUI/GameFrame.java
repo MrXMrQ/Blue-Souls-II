@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GameFrame extends Thread {
+public class GameFrame {
     //Buttons
     JButton button1;
     JButton button2;
@@ -54,10 +54,11 @@ public class GameFrame extends Thread {
     Thread gameFightThread;
     int temp;
     int ultCounter = 0;
-    boolean visibility = false;
+    Thread ultThread;
 
     public GameFrame() {
         gameDungeonSelection();
+
     }
 
     public void gameDungeonSelection() {
@@ -193,7 +194,7 @@ public class GameFrame extends Thread {
                 if (playerAttack >= 90) {
                     bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() * 2 + GameLauncher.characterArray[0].getFist()));
                     textAreaFight.append(playerName + " Crit damage: " + (GameLauncher.characterArray[0].getDamage() * 2 + GameLauncher.characterArray[0].getFist()) + "\n");
-                    ultCounter += 3;
+                    ultCounter+=2;
                 } else {
                     bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() + GameLauncher.characterArray[0].getFist()));
                     textAreaFight.append(playerName + " damage: " + (GameLauncher.characterArray[0].getDamage() + GameLauncher.characterArray[0].getFist()) + "\n");
@@ -209,7 +210,6 @@ public class GameFrame extends Thread {
                         GameLauncher.characterArray[0].setFist(0);
                     }
                 }
-                ultCalculator();
                 ifBotDead();
 
             });
@@ -258,14 +258,15 @@ public class GameFrame extends Thread {
             ultButton = new JButton("ult");
             ultButton.setPreferredSize(new Dimension(256, 64));
             ultButton.addActionListener(event -> {
+                ultCounter = 0;
+                ultButton.setVisible(false);
                 bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() * 4));
                 textAreaFight.append(playerName + " damage: " + ((GameLauncher.characterArray[0].getDamage() * 4) + GameLauncher.characterArray[0].getFist()) + "\n");
-                visibility = false;
-                ultCounter = 0;
                 ifBotDead();
             });
             panelCENTER.add(ultButton);
-            ultButton.setVisible(visibility);
+            ultThread = new Thread(this::ultUpdate);
+            ultThread.start();
 
             MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);
 
@@ -332,7 +333,6 @@ public class GameFrame extends Thread {
 
                 }
             }
-
             GameLauncher.characterArray[0].setSouls(GameLauncher.characterArray[0].getSouls() + bot.getSouls());
             textAreaFight.append("Bot dead");
             remover();
@@ -419,15 +419,6 @@ public class GameFrame extends Thread {
 
     }
 
-    public void ultCalculator() {
-        if (ultCounter >= 10) {
-            visibility = true;
-            ultButton.setVisible(true);
-        } else {
-            ultButton.setVisible(false);
-        }
-    }
-
     public void ifPlayerDead() {
         if (GameLauncher.characterArray[0].getHealthpoints() <= 0) {
             MainMenuAndChaSubmitFrames.mainWindow.dispose();
@@ -441,5 +432,15 @@ public class GameFrame extends Thread {
         MainMenuAndChaSubmitFrames.mainWindow.getContentPane().removeAll();
         MainMenuAndChaSubmitFrames.mainWindow.repaint();
         SwingUtilities.updateComponentTreeUI(MainMenuAndChaSubmitFrames.mainWindow);
+    }
+
+    public void ultUpdate() {
+        while (ultThread.isAlive()) {
+            if (ultCounter >= 10) {
+                ultButton.setVisible(true);
+            } else {
+                ultButton.setVisible(false);
+            }
+        }
     }
 }
