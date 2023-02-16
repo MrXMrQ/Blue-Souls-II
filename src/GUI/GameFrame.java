@@ -23,8 +23,9 @@ public class GameFrame extends Thread {
     JButton healButton;
     JButton inventoryButton;
     JButton equipButton;
+    JButton ultButton;
 
-    //Buttons
+    //Labels
     LabelWithIcons cave1;
     LabelWithIcons cave2;
     LabelWithIcons cave3;
@@ -52,6 +53,8 @@ public class GameFrame extends Thread {
     String playerName = GameLauncher.characterArray[0].getName();
     Thread gameFightThread;
     int temp;
+    int ultCounter = 0;
+    boolean visibility = false;
 
     public GameFrame() {
         gameDungeonSelection();
@@ -190,22 +193,23 @@ public class GameFrame extends Thread {
                 if (playerAttack >= 90) {
                     bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() * 2 + GameLauncher.characterArray[0].getFist()));
                     textAreaFight.append(playerName + " Crit damage: " + (GameLauncher.characterArray[0].getDamage() * 2 + GameLauncher.characterArray[0].getFist()) + "\n");
-
+                    ultCounter += 3;
                 } else {
                     bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() + GameLauncher.characterArray[0].getFist()));
                     textAreaFight.append(playerName + " damage: " + (GameLauncher.characterArray[0].getDamage() + GameLauncher.characterArray[0].getFist()) + "\n");
-
+                    ultCounter++;
                 }
-                if(Equip.tempWeapon != null) {
+                if (Equip.tempWeapon != null) {
                     temp = Equip.tempWeapon.getDurability();
                     Equip.tempWeapon.setDurability(Equip.tempWeapon.getDurability() - 1);
-                    if(Equip.tempWeapon.getDurability() <= 0) {
+                    if (Equip.tempWeapon.getDurability() <= 0) {
                         Equip.tempWeapon = null;
                         Equip.isWeaponEquipped = false;
                         Equip.weaponLabel.setText("");
                         GameLauncher.characterArray[0].setFist(0);
                     }
                 }
+                ultCalculator();
                 ifBotDead();
 
             });
@@ -250,6 +254,18 @@ public class GameFrame extends Thread {
                 }
             });
             panelCENTER.add(equipButton);
+
+            ultButton = new JButton("ult");
+            ultButton.setPreferredSize(new Dimension(256, 64));
+            ultButton.addActionListener(event -> {
+                bot.setHealthpoints(bot.getHealthpoints() - (GameLauncher.characterArray[0].getDamage() * 4));
+                textAreaFight.append(playerName + " damage: " + ((GameLauncher.characterArray[0].getDamage() * 4) + GameLauncher.characterArray[0].getFist()) + "\n");
+                visibility = false;
+                ultCounter = 0;
+                ifBotDead();
+            });
+            panelCENTER.add(ultButton);
+            ultButton.setVisible(visibility);
 
             MainMenuAndChaSubmitFrames.mainWindow.add(panelCENTER, BorderLayout.CENTER);
 
@@ -303,15 +319,15 @@ public class GameFrame extends Thread {
 
             if (bot.isItemDrop() && randomForItem >= 0) { //100%
                 if (randomForItem >= 75) {
-                    int random = (int)(Math.random() * ItemLauncher.weaponsArray.length);
+                    int random = (int) (Math.random() * ItemLauncher.weaponsArray.length);
                     Equip.allPlayerItems.add(ItemLauncher.weaponsArray[random]);
 
                 } else if (randomForItem >= 50) {
-                    int random = (int)(Math.random() * ItemLauncher.ringsArray.length);
+                    int random = (int) (Math.random() * ItemLauncher.ringsArray.length);
                     Equip.allPlayerItems.add(ItemLauncher.ringsArray[random]);
 
                 } else {
-                    int random = (int)(Math.random() * ItemLauncher.useItemsArray.length);
+                    int random = (int) (Math.random() * ItemLauncher.useItemsArray.length);
                     Equip.allPlayerItems.add(ItemLauncher.useItemsArray[random]);
 
                 }
@@ -401,6 +417,15 @@ public class GameFrame extends Thread {
         progressBarHealth.setString(GameLauncher.characterArray[0].getHealthpoints() + " / " + GameLauncher.characterArray[0].getMaxHealth());
         ifPlayerDead();
 
+    }
+
+    public void ultCalculator() {
+        if (ultCounter >= 10) {
+            visibility = true;
+            ultButton.setVisible(true);
+        } else {
+            ultButton.setVisible(false);
+        }
     }
 
     public void ifPlayerDead() {
